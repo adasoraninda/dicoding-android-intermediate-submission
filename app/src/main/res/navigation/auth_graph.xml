@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_graph"
+    app:startDestination="@id/fragment_login">
+
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="com.adasoraninda.dicodingstoryapp.features.auth.login.LoginFragment"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/nav_login_to_story"
+            app:destination="@id/activity_story" />
+
+        <action
+            android:id="@+id/nav_login_to_register"
+            app:destination="@id/fragment_register"
+            app:launchSingleTop="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_register"
+        android:name="com.adasoraninda.dicodingstoryapp.features.auth.register.RegisterFragment"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/nav_register_to_login"
+            app:destination="@id/fragment_login"
+            app:launchSingleTop="true" />
+
+    </fragment>
+
+    <activity
+        android:id="@+id/activity_story"
+        android:name="com.adasoraninda.dicodingstoryapp.features.story.StoryActivity"
+        tools:layout="@layout/activity_story" />
+
+</navigation>

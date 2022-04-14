@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Dicoding Story App</string>
+    <string name="label_email">Email address</string>
+    <string name="label_password">Password</string>
+    <string name="label_name">Name</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
+    <string name="error_input_empty">Input form can\'t be empty</string>
+    <string name="error_input_empty_email">Email address can\'t be empty</string>
+    <string name="error_input_empty_password">Password can\'t be empty</string>
+    <string name="error_input_match_email">Email address is not valid</string>
+    <string name="error_input_match_password">Password length at least 6 characters</string>
+    <string name="cd_back_button">going back to previous page</string>
+</resources>
