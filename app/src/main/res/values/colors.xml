@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="blue_primary">#1f2b38</color>
+    <color name="blue_primary_transparent">#BB1f2b38</color>
     <color name="blue_dark_primary">#000012</color>
-    <color name="blue_light_primary">#475462</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_2">#F6F8FA</color>
     <color name="grey">#A1A1AA</color>
-    <color name="grey_2">#636363</color>
     <color name="grey_3">#3D3D3D</color>
+    <color name="pink">#FF5483</color>
 </resources>

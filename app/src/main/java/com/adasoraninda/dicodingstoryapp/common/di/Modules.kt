@@ -1,12 +1,26 @@
-package com.adasoraninda.dicodingstoryapp.common.di.deps
+package com.adasoraninda.dicodingstoryapp.common.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.adasoraninda.dicodingstoryapp.model.UserPreference
 import com.adasoraninda.dicodingstoryapp.service.remote.api.BASE_URL
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
+
+object OkHttpClientInstance {
+    private val loggingInterceptor =
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
+    fun get(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+    }
+}
 
 object RetrofitInstance {
     @Volatile
@@ -14,12 +28,14 @@ object RetrofitInstance {
 
     fun get(
         baseUrl: String = BASE_URL,
-        converter: Converter.Factory = GsonConverterFactory.create()
+        converter: Converter.Factory = GsonConverterFactory.create(),
+        client: OkHttpClient = OkHttpClient(),
     ): Retrofit {
         return INSTANCE ?: synchronized(this) {
             val instance = Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(converter)
+                .client(client)
                 .build()
 
             INSTANCE = instance

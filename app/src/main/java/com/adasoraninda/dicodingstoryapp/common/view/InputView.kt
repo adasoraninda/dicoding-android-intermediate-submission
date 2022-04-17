@@ -8,11 +8,11 @@ import android.os.Parcelable
 import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
+import androidx.core.util.PatternsCompat
 import androidx.core.widget.addTextChangedListener
 import com.adasoraninda.dicodingstoryapp.R
 
@@ -48,7 +48,7 @@ class InputView @JvmOverloads constructor(
             return@addTextChangedListener
         }
 
-        if (Patterns.EMAIL_ADDRESS.matcher(text).matches().not()) {
+        if (PatternsCompat.EMAIL_ADDRESS.matcher(text).matches().not()) {
             error = context.getString(R.string.error_input_match_email)
             return@addTextChangedListener
         }
@@ -181,7 +181,7 @@ class InputView @JvmOverloads constructor(
                 addTextChangedListener(passwordListener)
                 setOnTouchListener(this)
             }
-            else-> addTextChangedListener(normalListener)
+            else -> addTextChangedListener(normalListener)
         }
     }
 

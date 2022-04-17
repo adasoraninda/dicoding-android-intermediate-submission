@@ -2,13 +2,13 @@ package com.adasoraninda.dicodingstoryapp
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.adasoraninda.dicodingstoryapp.common.di.deps.RetrofitInstance
-import com.adasoraninda.dicodingstoryapp.common.di.deps.UserPreferenceInstance
+import com.adasoraninda.dicodingstoryapp.common.di.RetrofitInstance
+import com.adasoraninda.dicodingstoryapp.common.di.UserPreferenceInstance
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.kotlin.mock
 
-class DependenciesTest {
+class ModulesTest {
 
     @Test
     fun should_user_preference_dependencies_is_a_singleton() {

@@ -1,7 +1,6 @@
 package com.adasoraninda.dicodingstoryapp
 
 import android.app.Application
-import androidx.viewbinding.BuildConfig
 import com.adasoraninda.dicodingstoryapp.common.di.Injector
 import timber.log.Timber
 
@@ -15,6 +14,7 @@ class DicodingStoryApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
     }
 
 }

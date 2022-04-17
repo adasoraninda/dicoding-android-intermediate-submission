@@ -5,11 +5,38 @@
     <string name="label_name">Name</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="go_to_login">Go to login</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="profile">Profile</string>
+    <string name="label_user_id">User id</string>
+    <string name="form_dot">:</string>
+    <string name="logout">Logout</string>
+    <string name="label_description">Description</string>
+    <string name="create_story">Create Story</string>
+    <string name="click_to_add_image">Click to add image</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="or">OR</string>
 
+    <string name="success_occurred">Success</string>
+    <string name="error_occurred">Something went wrong, please try again later</string>
+    <string name="error_token">User token not found</string>
+    <string name="error_input_name">Please correct your name</string>
+    <string name="error_input_email">Please correct your email address</string>
+    <string name="error_input_password">Please correct your password</string>
     <string name="error_input_empty">Input form can\'t be empty</string>
     <string name="error_input_empty_email">Email address can\'t be empty</string>
     <string name="error_input_empty_password">Password can\'t be empty</string>
     <string name="error_input_match_email">Email address is not valid</string>
     <string name="error_input_match_password">Password length at least 6 characters</string>
+    <string name="error_permission">Not getting permission</string>
+    <string name="error_input_desc_empty">Please correct your description</string>
+    <string name="error_file_null">File can\'t be null</string>
+    <string name="fail_to_show_camera">Fail to show camera</string>
+    <string name="fail_to_take_picture">Failed to take picture</string>
+
     <string name="cd_back_button">going back to previous page</string>
+    <string name="cd_an_image_of_story_dicoding">An image of story dicoding</string>
+    <string name="cd_add_button_story">Adding story</string>
 </resources>

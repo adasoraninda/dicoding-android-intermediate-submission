@@ -24,17 +24,14 @@ interface DicodingStoryApi {
 
     @GET(value = PATH_STORIES)
     suspend fun getStories(
-        page: Int = 1,
-        size: Int = 10,
-        location: Int = 0,
+        @Header("Authorization") token: String
     ): Response<StoryResponse>
 
     @Multipart
-    @Headers("Content-Type", "multipart/form-data")
     @POST(value = PATH_STORIES)
     suspend fun addStory(
         @Header("Authorization") token: String,
-        @Part(value = "photo") photo: MultipartBody.Part,
-        @PartMap body: Map<String, RequestBody>
+        @Part photo: MultipartBody.Part,
+        @Part("description") description: RequestBody
     ): Response<BaseResponse>
 }

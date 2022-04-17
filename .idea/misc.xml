@@ -4,18 +4,35 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/drawable/bg_circle.xml" value="0.1" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/drawable/bg_image_error.xml" value="0.1335" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/drawable/bg_input.xml" value="0.1405" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/drawable/bg_rounded.xml" value="0.177" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/drawable/ic_broken_image.xml" value="0.1335" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/drawable/ic_camera.xml" value="0.124" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/drawable/ic_capture.xml" value="0.139" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/drawable/ic_image.xml" value="0.1315" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/drawable/ic_switch_camera.xml" value="0.139" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/activity_auth.xml" value="0.20416666666666666" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/activity_camera.xml" value="0.20416666666666666" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/activity_list_story.xml" value="0.20416666666666666" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/activity_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/activity_splash.xml" value="0.20416666666666666" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/activity_story.xml" value="0.20416666666666666" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_add_story.xml" value="0.20416666666666666" />
-        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_detail_story.xml" value="0.20416666666666666" />
-        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_list_story.xml" value="0.20416666666666666" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_detail_story.xml" value="0.25" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_add_photo.xml" value="0.20416666666666666" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_info.xml" value="0.20416666666666666" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_info_auth.xml" value="0.2" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_profile.xml" value="0.20416666666666666" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_success.xml" value="0.20416666666666666" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_list_story.xml" value="0.18" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_login.xml" value="0.16" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_register.xml" value="0.1" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_splash.xml" value="0.2" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/item_story.xml" value="0.18" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/menu/list_story_menu.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>
