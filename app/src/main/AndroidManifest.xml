@@ -5,10 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
     <application
@@ -20,10 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DicodingStoryApp">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_API_KEY" />
+
+        <activity android:name=".features.map.StoryMapsActivity" />
         <activity android:name=".features.story.add.CameraActivity" />
-
         <activity android:name=".features.story.StoryActivity" />
-
         <activity android:name=".features.auth.AuthActivity" />
 
         <activity
@@ -31,7 +35,7 @@
             android:theme="@style/Theme.DicodingStoryApp.Splash" />
 
         <activity-alias
-            android:name="Launcher"
+            android:name=".Launcher"
             android:exported="true"
             android:targetActivity=".features.splash.SplashActivity">
             <intent-filter>

@@ -39,11 +39,12 @@ class ListStoryAdapter(
             binding.textName.text = data.name
             binding.imageStory.loadImage(data.photoUrl)
 
-            val views = arrayOf<Pair<View,String>>(
+            val views = arrayOf<Pair<View, String>>(
                 binding.imageStory to binding.imageStory.transitionName,
                 binding.textName to binding.textName.transitionName,
                 binding.textDate to binding.textDate.transitionName,
             )
+
             binding.root.setOnClickListener {
                 clickListener?.invoke(
                     views, data

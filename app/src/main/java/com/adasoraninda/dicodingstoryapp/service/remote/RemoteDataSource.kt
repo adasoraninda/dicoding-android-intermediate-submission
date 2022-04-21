@@ -11,6 +11,7 @@ import com.adasoraninda.dicodingstoryapp.service.remote.response.StoryResponse
 import com.adasoraninda.dicodingstoryapp.utils.EMPTY_ERROR
 import com.adasoraninda.dicodingstoryapp.utils.formatToken
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -25,7 +26,8 @@ import retrofit2.Response
 import timber.log.Timber
 
 class RemoteDataSource(
-    private val service: DicodingStoryApi
+    private val service: DicodingStoryApi,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
 
     fun register(
@@ -47,7 +49,7 @@ class RemoteDataSource(
         Timber.d(body.message)
         emit(body)
     }
-        .flowOn(Dispatchers.IO)
+        .flowOn(dispatcher)
         .catch {
             emit(
                 BaseResponse(
@@ -79,7 +81,7 @@ class RemoteDataSource(
         Timber.d(body.message)
         emit(body)
     }
-        .flowOn(Dispatchers.IO)
+        .flowOn(dispatcher)
         .catch {
             emit(LoginResponse().apply {
                 error = true
@@ -101,7 +103,7 @@ class RemoteDataSource(
         Timber.d(body.message)
         emit(Result.success(body))
     }
-        .flowOn(Dispatchers.IO)
+        .flowOn(dispatcher)
         .catch { emit(Result.failure(IllegalStateException(EMPTY_ERROR))) }
 
     fun addStory(
@@ -130,7 +132,7 @@ class RemoteDataSource(
         Timber.d(responseBody.message)
         emit(responseBody)
     }
-        .flowOn(Dispatchers.IO)
+        .flowOn(dispatcher)
         .catch {
             emit(BaseResponse(error = true, message = EMPTY_ERROR))
         }

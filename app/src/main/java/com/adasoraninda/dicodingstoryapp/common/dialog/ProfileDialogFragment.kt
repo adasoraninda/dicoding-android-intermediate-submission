@@ -3,6 +3,7 @@ package com.adasoraninda.dicodingstoryapp.common.dialog
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.adasoraninda.dicodingstoryapp.databinding.FragmentDialogProfileBinding
@@ -10,7 +11,8 @@ import com.adasoraninda.dicodingstoryapp.databinding.FragmentDialogProfileBindin
 class ProfileDialogFragment(
     private var userId: String? = null,
     private var name: String? = null,
-    private val logoutClicked: (() -> Unit)? = null
+    private val onLogoutClicked: (() -> Unit)? = null,
+    private val onCanceled: (() -> Unit)? = null
 ) : DialogFragment() {
 
     private var _binding: FragmentDialogProfileBinding? = null
@@ -25,6 +27,11 @@ class ProfileDialogFragment(
         return AlertDialog.Builder(requireContext())
             .setView(binding?.root)
             .create()
+    }
+
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        onCanceled?.invoke()
     }
 
     override fun onDestroyView() {
@@ -43,7 +50,7 @@ class ProfileDialogFragment(
         val view = binding ?: return
 
         view.buttonLogout.setOnClickListener {
-            logoutClicked?.invoke()
+            onLogoutClicked?.invoke()
             dismiss()
         }
     }

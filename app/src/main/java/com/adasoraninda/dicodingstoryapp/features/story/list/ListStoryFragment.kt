@@ -108,6 +108,7 @@ class ListStoryFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.loading.observe(viewLifecycleOwner) { loading ->
+            binding?.textError?.isVisible = !loading
             binding?.progressBar?.isVisible = loading
         }
 
@@ -157,11 +158,15 @@ class ListStoryFragment : Fragment() {
             profileDialog = ProfileDialogFragment(
                 userId = user.userId,
                 name = user.name,
-            ) {
-                viewModel.logout()
-                viewModel.dismissProfileDialog()
-                findNavController().navigate(R.id.nav_list_to_auth)
-            }
+                onLogoutClicked = {
+                    viewModel.logout()
+                    viewModel.dismissProfileDialog()
+                    findNavController().navigate(R.id.nav_list_to_auth)
+                },
+                onCanceled = {
+                    viewModel.dismissProfileDialog()
+                }
+            )
 
             profileDialog?.show(parentFragmentManager, ProfileDialogFragment.TAG)
         }
