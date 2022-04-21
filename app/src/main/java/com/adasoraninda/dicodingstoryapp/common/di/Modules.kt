@@ -2,6 +2,7 @@ package com.adasoraninda.dicodingstoryapp.common.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.adasoraninda.dicodingstoryapp.BuildConfig
 import com.adasoraninda.dicodingstoryapp.model.UserPreference
 import com.adasoraninda.dicodingstoryapp.service.remote.api.BASE_URL
 import okhttp3.OkHttpClient
@@ -13,7 +14,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object OkHttpClientInstance {
     private val loggingInterceptor =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        HttpLoggingInterceptor().setLevel(
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        )
 
     fun get(): OkHttpClient {
         return OkHttpClient.Builder()

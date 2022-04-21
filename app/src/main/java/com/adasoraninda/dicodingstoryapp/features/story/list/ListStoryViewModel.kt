@@ -22,8 +22,8 @@ class ListStoryViewModel(
     private val _storiesData = MutableLiveData<List<Story>>()
     val storiesData: LiveData<List<Story>> get() = _storiesData
 
-    private val _profileDialog = MutableLiveEvent<User?>()
-    val profileDialog: LiveEvent<User?> get() = _profileDialog
+    private val _profileDialog = MutableLiveData<User?>()
+    val profileDialog: LiveData<User?> get() = _profileDialog
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
@@ -84,7 +84,11 @@ class ListStoryViewModel(
 
     fun showProfileDialog() {
         val user = _userData.value ?: return
-        _profileDialog.value = Event(user)
+        _profileDialog.value = user
+    }
+
+    fun dismissProfileDialog(){
+        _profileDialog.value = null
     }
 
     fun logout() = viewModelScope.launch {

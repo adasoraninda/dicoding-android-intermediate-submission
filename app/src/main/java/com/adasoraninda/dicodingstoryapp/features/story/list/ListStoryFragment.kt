@@ -148,8 +148,8 @@ class ListStoryFragment : Fragment() {
             }
         }
 
-        viewModel.profileDialog.observe(viewLifecycleOwner) { event ->
-            val user = event?.get() ?: return@observe
+        viewModel.profileDialog.observe(viewLifecycleOwner) {
+            val user = it ?: return@observe
 
             val f = parentFragmentManager.findFragmentByTag(ProfileDialogFragment.TAG)
             if (f != null) (f as ProfileDialogFragment).dismiss()
@@ -159,6 +159,7 @@ class ListStoryFragment : Fragment() {
                 name = user.name,
             ) {
                 viewModel.logout()
+                viewModel.dismissProfileDialog()
                 findNavController().navigate(R.id.nav_list_to_auth)
             }
 

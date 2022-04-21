@@ -12,10 +12,6 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <ImageView
             android:id="@+id/image_story"
             android:layout_width="match_parent"
@@ -51,7 +47,5 @@
             android:transitionName="name"
             app:fontFamily="@font/quicksand_bold"
             tools:text="@string/app_name" />
-
-    </FrameLayout>
 
 </com.google.android.material.card.MaterialCardView>

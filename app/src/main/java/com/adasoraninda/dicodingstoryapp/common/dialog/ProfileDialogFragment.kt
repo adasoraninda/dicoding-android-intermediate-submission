@@ -19,25 +19,12 @@ class ProfileDialogFragment(
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = FragmentDialogProfileBinding.inflate(layoutInflater)
 
-
-
-        if (savedInstanceState != null) {
-            userId = savedInstanceState.getString(USER_ID_KEY)
-            name = savedInstanceState.getString(NAME_KEY)
-        }
-
         setupView()
         actionListeners()
 
         return AlertDialog.Builder(requireContext())
             .setView(binding?.root)
             .create()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(NAME_KEY, name)
-        outState.putString(USER_ID_KEY, userId)
     }
 
     override fun onDestroyView() {
@@ -63,8 +50,6 @@ class ProfileDialogFragment(
 
     companion object {
         const val TAG = "ProfileDialogFragment"
-        private const val USER_ID_KEY = "id"
-        private const val NAME_KEY = "name"
     }
 
 }

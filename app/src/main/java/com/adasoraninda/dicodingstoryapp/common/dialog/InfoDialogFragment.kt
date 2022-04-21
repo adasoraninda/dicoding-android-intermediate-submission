@@ -7,14 +7,12 @@ import android.view.View
 import androidx.fragment.app.DialogFragment
 import com.adasoraninda.dicodingstoryapp.databinding.FragmentDialogInfoBinding
 
-private typealias onClickListener = () -> Unit
-
 class InfoDialogFragment(
     private val message: String? = null,
     private val acceptText: String? = null,
     private val cancelText: String? = null,
-    private val onAcceptClicked: onClickListener? = null,
-    private val onCancelClicked: onClickListener? = null
+    private val onAcceptClicked: (() -> Unit)? = null,
+    private val onCancelClicked: (() -> Unit)? = null
 ) : DialogFragment() {
 
     private var _binding: FragmentDialogInfoBinding? = null
