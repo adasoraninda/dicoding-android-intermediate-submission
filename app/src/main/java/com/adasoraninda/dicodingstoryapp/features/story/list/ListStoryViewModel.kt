@@ -10,6 +10,7 @@ import com.adasoraninda.dicodingstoryapp.utils.*
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 class ListStoryViewModel(
@@ -37,12 +38,14 @@ class ListStoryViewModel(
         }
 
     init {
-        initialize()
-        getStories()
+        runBlocking {
+            getUser()
+            getStories()
+        }
     }
 
     @VisibleForTesting
-    fun initialize() = viewModelScope.launch {
+    fun getUser() = viewModelScope.launch {
         userPreference.getUser().collect(_userData::setValue)
     }
 
@@ -50,9 +53,11 @@ class ListStoryViewModel(
         val token = _userData.value?.token
 
         if (token == null) {
-            _errorMessage.value = EMPTY_TOKEN_ERROR
+            _errorMessage.value = ERROR_TOKEN_EMPTY
             return@launch
         }
+
+        Timber.d(token)
 
         remoteDataSource.getStories(token.formatToken())
             .onStart { _loading.postValue(true) }
@@ -61,7 +66,7 @@ class ListStoryViewModel(
                 Timber.d(result.toString())
                 result.fold(
                     onFailure = {
-                        _errorMessage.value = it.message
+                        _errorMessage.postValue(it.message)
                     },
                     onSuccess = {
                         val storiesRes = it.listStory ?: emptyList()
@@ -87,7 +92,7 @@ class ListStoryViewModel(
         _profileDialog.value = user
     }
 
-    fun dismissProfileDialog(){
+    fun dismissProfileDialog() {
         _profileDialog.value = null
     }
 

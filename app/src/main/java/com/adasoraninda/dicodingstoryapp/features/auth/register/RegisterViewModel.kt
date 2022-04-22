@@ -42,11 +42,11 @@ class RegisterViewModel(
                 Timber.d(it.toString())
                 val isError = it.error ?: true
                 if (isError) {
-                    val message = it.message ?: EMPTY_ERROR
+                    val message = it.message ?: ERROR_EMPTY
                     _dialogInfoError.postValue(message)
                     Timber.e(message)
                 } else {
-                    val message = it.message ?: EMPTY_SUCCESS
+                    val message = it.message ?: SUCCESS_EMPTY
                     _dialogInfoSuccess.postValue(message)
                 }
             }

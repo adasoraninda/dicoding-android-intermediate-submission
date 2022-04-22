@@ -8,7 +8,7 @@ import com.adasoraninda.dicodingstoryapp.service.remote.request.RegisterRequest
 import com.adasoraninda.dicodingstoryapp.service.remote.response.BaseResponse
 import com.adasoraninda.dicodingstoryapp.service.remote.response.LoginResponse
 import com.adasoraninda.dicodingstoryapp.service.remote.response.StoryResponse
-import com.adasoraninda.dicodingstoryapp.utils.EMPTY_ERROR
+import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.formatToken
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.CoroutineDispatcher
@@ -54,7 +54,7 @@ class RemoteDataSource(
             emit(
                 BaseResponse(
                     error = true,
-                    message = EMPTY_ERROR
+                    message = ERROR_EMPTY
                 )
             )
         }
@@ -85,12 +85,17 @@ class RemoteDataSource(
         .catch {
             emit(LoginResponse().apply {
                 error = true
-                message = EMPTY_ERROR
+                message = ERROR_EMPTY
             })
         }
 
-    fun getStories(token: String): Flow<Result<StoryResponse>> = flow {
-        val response = service.getStories(token)
+    fun getStories(
+        token: String,
+        page: Int = 1,
+        size: Int = 10,
+        location: Int = 0,
+    ): Flow<Result<StoryResponse>> = flow {
+        val response = service.getStories(token, page, size, location)
 
         if (response.isSuccessful.not()) {
             val errorBody = errorHandler(response)
@@ -104,7 +109,7 @@ class RemoteDataSource(
         emit(Result.success(body))
     }
         .flowOn(dispatcher)
-        .catch { emit(Result.failure(IllegalStateException(EMPTY_ERROR))) }
+        .catch { emit(Result.failure(IllegalStateException(ERROR_EMPTY))) }
 
     fun addStory(
         body: InputAddStory
@@ -134,7 +139,7 @@ class RemoteDataSource(
     }
         .flowOn(dispatcher)
         .catch {
-            emit(BaseResponse(error = true, message = EMPTY_ERROR))
+            emit(BaseResponse(error = true, message = ERROR_EMPTY))
         }
 
 

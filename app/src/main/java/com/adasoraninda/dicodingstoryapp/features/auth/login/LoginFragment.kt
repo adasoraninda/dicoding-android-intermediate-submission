@@ -93,12 +93,13 @@ class LoginFragment : Fragment() {
         viewModel.dialogInfoError.observe(viewLifecycleOwner) {
             var message = it ?: return@observe
 
-            if (message == EMPTY_ERROR) {
+            if (message == ERROR_EMPTY) {
                 message = getString(R.string.error_occurred)
             }
 
-            val f = parentFragmentManager.findFragmentByTag(InfoDialogFragment.TAG)
-            if (f != null) (f as InfoDialogFragment).dismiss()
+            (parentFragmentManager
+                .findFragmentByTag(InfoDialogFragment.TAG) as? InfoDialogFragment)
+                ?.dismiss()
 
             dialogInfo = InfoDialogFragment(
                 message = message,

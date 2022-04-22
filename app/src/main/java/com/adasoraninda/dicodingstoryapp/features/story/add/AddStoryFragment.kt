@@ -156,7 +156,7 @@ class AddStoryFragment : Fragment() {
         viewModel.dialogInfoSuccess.observe(viewLifecycleOwner) {
             var message = it ?: return@observe
 
-            if (message == EMPTY_SUCCESS) {
+            if (message == SUCCESS_EMPTY) {
                 message = getString(R.string.success_occurred)
             }
 
@@ -180,7 +180,7 @@ class AddStoryFragment : Fragment() {
         viewModel.dialogInfoError.observe(viewLifecycleOwner) {
             var message = it ?: return@observe
 
-            if (message == EMPTY_ERROR) {
+            if (message == ERROR_EMPTY) {
                 message = getString(R.string.error_occurred)
             }
 

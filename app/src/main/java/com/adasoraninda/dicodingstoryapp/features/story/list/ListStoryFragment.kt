@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.adasoraninda.dicodingstoryapp.R
 import com.adasoraninda.dicodingstoryapp.common.dialog.ProfileDialogFragment
 import com.adasoraninda.dicodingstoryapp.databinding.FragmentListStoryBinding
-import com.adasoraninda.dicodingstoryapp.utils.EMPTY_ERROR
-import com.adasoraninda.dicodingstoryapp.utils.EMPTY_TOKEN_ERROR
+import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
+import com.adasoraninda.dicodingstoryapp.utils.ERROR_TOKEN_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.injector
 
 class ListStoryFragment : Fragment() {
@@ -83,11 +83,17 @@ class ListStoryFragment : Fragment() {
         }
 
         view.toolbar.setOnMenuItemClickListener { menu ->
-            if (menu.itemId != R.id.action_profile) {
-                return@setOnMenuItemClickListener false
+            when (menu.itemId) {
+                R.id.action_profile -> {
+                    viewModel.showProfileDialog()
+                }
+                R.id.action_map -> {
+                    findNavController().navigate(R.id.nav_list_to_map)
+                }
+                else -> {
+                    return@setOnMenuItemClickListener false
+                }
             }
-
-            viewModel.showProfileDialog()
             true
         }
 
@@ -131,15 +137,9 @@ class ListStoryFragment : Fragment() {
             if (error == null) return@observe
 
             val message = when (error) {
-                EMPTY_ERROR -> {
-                    getString(R.string.error_occurred)
-                }
-                EMPTY_TOKEN_ERROR -> {
-                    getString(R.string.error_token)
-                }
-                else -> {
-                    error
-                }
+                ERROR_EMPTY -> getString(R.string.error_occurred)
+                ERROR_TOKEN_EMPTY -> getString(R.string.error_token)
+                else -> error
             }
 
             binding?.listStories?.isVisible = false
@@ -152,20 +152,21 @@ class ListStoryFragment : Fragment() {
         viewModel.profileDialog.observe(viewLifecycleOwner) {
             val user = it ?: return@observe
 
-            val f = parentFragmentManager.findFragmentByTag(ProfileDialogFragment.TAG)
-            if (f != null) (f as ProfileDialogFragment).dismiss()
+            (parentFragmentManager
+                .findFragmentByTag(ProfileDialogFragment.TAG) as? ProfileDialogFragment)
+                ?.dismiss()
 
             profileDialog = ProfileDialogFragment(
                 userId = user.userId,
                 name = user.name,
+                onCanceled = {
+                    viewModel.dismissProfileDialog()
+                },
                 onLogoutClicked = {
                     viewModel.logout()
                     viewModel.dismissProfileDialog()
                     findNavController().navigate(R.id.nav_list_to_auth)
                 },
-                onCanceled = {
-                    viewModel.dismissProfileDialog()
-                }
             )
 
             profileDialog?.show(parentFragmentManager, ProfileDialogFragment.TAG)

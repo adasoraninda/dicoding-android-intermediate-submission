@@ -11,7 +11,7 @@ import com.adasoraninda.dicodingstoryapp.model.InputLogin
 import com.adasoraninda.dicodingstoryapp.model.User
 import com.adasoraninda.dicodingstoryapp.model.UserPreference
 import com.adasoraninda.dicodingstoryapp.service.remote.RemoteDataSource
-import com.adasoraninda.dicodingstoryapp.utils.EMPTY_ERROR
+import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.Event
 import com.adasoraninda.dicodingstoryapp.utils.LiveEvent
 import com.adasoraninda.dicodingstoryapp.utils.MutableLiveEvent
@@ -48,7 +48,7 @@ class LoginViewModel(
             .collect {
                 Timber.d(it.toString())
                 val isError = it.error ?: true
-                val message = it.message ?: EMPTY_ERROR
+                val message = it.message ?: ERROR_EMPTY
                 if (isError) {
                     _dialogInfoError.postValue(message)
                     Timber.e(message)

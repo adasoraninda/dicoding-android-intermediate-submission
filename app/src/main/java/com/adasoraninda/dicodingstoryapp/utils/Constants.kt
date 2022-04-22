@@ -1,5 +1,6 @@
 package com.adasoraninda.dicodingstoryapp.utils
 
-const val EMPTY_ERROR = "EMPTY_ERROR"
-const val EMPTY_TOKEN_ERROR = "EMPTY_TOKEN_ERROR"
-const val EMPTY_SUCCESS = "EMPTY_SUCCESS"
+const val ERROR_EMPTY = "ERROR_EMPTY"
+const val ERROR_TOKEN_EMPTY = "ERROR_TOKEN_EMPTY"
+
+const val SUCCESS_EMPTY = "SUCCESS_EMPTY"

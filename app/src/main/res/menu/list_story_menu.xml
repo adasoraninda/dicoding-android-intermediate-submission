@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_map"
+        android:icon="@drawable/ic_map"
+        android:title="@string/show_story_in_maps"
+        app:showAsAction="always"
+        />
+
+    <item
         android:id="@+id/action_profile"
         android:icon="@drawable/ic_account"
         android:title="@string/profile"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

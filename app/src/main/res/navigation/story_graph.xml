@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/fragment_list_story">
 
+    <deepLink app:uri="com.adasoraninda.dicodingstoryapp.features.story.detail.DetailStoryFragment" />
+
     <fragment
         android:id="@+id/fragment_list_story"
         android:name="com.adasoraninda.dicodingstoryapp.features.story.list.ListStoryFragment"
@@ -11,7 +13,7 @@
 
         <action
             android:id="@+id/nav_list_to_detail_story"
-            app:destination="@id/fragment_detail_story"/>
+            app:destination="@id/fragment_detail_story" />
 
         <action
             android:id="@+id/nav_list_to_add_story"
@@ -21,12 +23,16 @@
             android:id="@+id/nav_list_to_auth"
             app:destination="@id/activity_auth" />
 
+        <action
+            android:id="@+id/nav_list_to_map"
+            app:destination="@id/fragment_map" />
+
     </fragment>
 
     <fragment
         android:id="@+id/fragment_detail_story"
         android:name="com.adasoraninda.dicodingstoryapp.features.story.detail.DetailStoryFragment"
-        tools:layout="@layout/fragment_detail_story" >
+        tools:layout="@layout/fragment_detail_story">
 
         <argument
             android:name="story"
@@ -50,5 +56,16 @@
         android:id="@+id/activity_auth"
         android:name="com.adasoraninda.dicodingstoryapp.features.auth.AuthActivity"
         tools:layout="@layout/activity_auth" />
+
+    <fragment
+        android:id="@+id/fragment_map"
+        android:name="com.adasoraninda.dicodingstoryapp.features.map.StoryMapsFragment"
+        tools:layout="@layout/fragment_story_maps" >
+
+        <action
+            android:id="@+id/nav_map_to_detail_story"
+            app:destination="@id/fragment_detail_story" />
+
+    </fragment>
 
 </navigation>

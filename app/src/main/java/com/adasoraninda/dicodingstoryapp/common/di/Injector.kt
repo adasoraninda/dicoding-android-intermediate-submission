@@ -7,6 +7,7 @@ import com.adasoraninda.dicodingstoryapp.features.auth.login.LoginValidation
 import com.adasoraninda.dicodingstoryapp.features.auth.login.LoginViewModel
 import com.adasoraninda.dicodingstoryapp.features.auth.register.RegisterValidation
 import com.adasoraninda.dicodingstoryapp.features.auth.register.RegisterViewModel
+import com.adasoraninda.dicodingstoryapp.features.map.StoryMapsViewModel
 import com.adasoraninda.dicodingstoryapp.features.splash.SplashViewModel
 import com.adasoraninda.dicodingstoryapp.features.story.add.AddStoryValidation
 import com.adasoraninda.dicodingstoryapp.features.story.add.AddStoryViewModel
@@ -32,6 +33,17 @@ class Injector(private val context: Context) {
 
     val remoteDataSource: RemoteDataSource by lazy {
         RemoteDataSource(remoteService)
+    }
+
+    val storyMapsFactory by lazy {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return StoryMapsViewModel(
+                    remoteDataSource,
+                    userPreference,
+                ) as T
+            }
+        }
     }
 
     val addStoryFactory by lazy {

@@ -18,8 +18,12 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="or">OR</string>
+    <string name="show_story_in_maps">Show story in maps</string>
+    <string name="cd_add_button_story">Adding story</string>
+    <string name="data_loaded">Story loaded: %d</string>
 
     <string name="success_occurred">Success</string>
+    <string name="success_empty">No new data found</string>
     <string name="error_occurred">Something went wrong, please try again later</string>
     <string name="error_token">User token not found</string>
     <string name="error_input_name">Please correct your name</string>
@@ -37,6 +41,6 @@
     <string name="fail_to_take_picture">Failed to take picture</string>
 
     <string name="cd_back_button">going back to previous page</string>
+    <string name="cd_load_more_data">Load more data</string>
     <string name="cd_an_image_of_story_dicoding">An image of story dicoding</string>
-    <string name="cd_add_button_story">Adding story</string>
 </resources>

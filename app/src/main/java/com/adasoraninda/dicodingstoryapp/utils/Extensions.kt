@@ -1,5 +1,6 @@
 package com.adasoraninda.dicodingstoryapp.utils
 
+import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
@@ -14,19 +15,30 @@ import com.adasoraninda.dicodingstoryapp.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun Fragment.injector() = (requireActivity().applicationContext as DicodingStoryApp).injector
 
-fun Fragment.disableUserInteraction() {
-    requireActivity().window.setFlags(
+fun Activity.injector() = (application as DicodingStoryApp).injector
+
+fun Fragment.injector() = requireActivity().injector()
+
+fun Activity.disableUserInteraction() {
+    window.setFlags(
         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
     )
 }
 
-fun Fragment.enableUserInteraction() {
-    requireActivity().window.clearFlags(
+fun Activity.enableUserInteraction() {
+    window.clearFlags(
         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
     )
+}
+
+fun Fragment.disableUserInteraction() {
+    requireActivity().disableUserInteraction()
+}
+
+fun Fragment.enableUserInteraction() {
+    requireActivity().enableUserInteraction()
 }
 
 fun View.hideKeyboard() {

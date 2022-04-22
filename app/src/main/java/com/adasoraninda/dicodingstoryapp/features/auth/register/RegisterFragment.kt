@@ -10,6 +10,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -95,14 +96,13 @@ class RegisterFragment : Fragment() {
         viewModel.dialogInfoSuccess.observe(viewLifecycleOwner) {
             var message = it ?: return@observe
 
-            if (message == EMPTY_SUCCESS) {
+            if (message == SUCCESS_EMPTY) {
                 message = getString(R.string.success_occurred)
             }
 
-            val f = parentFragmentManager.findFragmentByTag(InfoDialogFragment.TAG)
-            if (f != null) {
-                (f as InfoDialogFragment).dismiss()
-            }
+            (parentFragmentManager
+                .findFragmentByTag(InfoDialogFragment.TAG) as? InfoDialogFragment)
+                ?.dismiss()
 
             dialogInfo = InfoDialogFragment(
                 message = message,
@@ -123,12 +123,13 @@ class RegisterFragment : Fragment() {
         viewModel.dialogInfoError.observe(viewLifecycleOwner) {
             var message = it ?: return@observe
 
-            if (message == EMPTY_ERROR) {
+            if (message == ERROR_EMPTY) {
                 message = getString(R.string.error_occurred)
             }
 
-            val f = parentFragmentManager.findFragmentByTag(InfoDialogFragment.TAG)
-            if (f != null) (f as InfoDialogFragment).dismiss()
+            (parentFragmentManager
+                .findFragmentByTag(InfoDialogFragment.TAG) as? InfoDialogFragment)
+                ?.dismiss()
 
             dialogInfo = InfoDialogFragment(
                 message = message,
