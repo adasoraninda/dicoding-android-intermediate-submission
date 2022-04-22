@@ -23,6 +23,7 @@
     <string name="data_loaded">Story loaded: %d</string>
     <string name="format_location">%s, %s</string>
     <string name="format_number">%d. </string>
+    <string name="retry">Retry</string>
 
     <string name="success_occurred">Success</string>
     <string name="success_empty">No new data found</string>
@@ -45,4 +46,5 @@
     <string name="cd_back_button">going back to previous page</string>
     <string name="cd_load_more_data">Load more data</string>
     <string name="cd_an_image_of_story_dicoding">An image of story dicoding</string>
+
 </resources>

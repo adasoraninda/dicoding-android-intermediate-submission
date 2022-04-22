@@ -9,6 +9,9 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.os.Environment
 import com.adasoraninda.dicodingstoryapp.R
+import com.google.gson.GsonBuilder
+import retrofit2.Response
+import timber.log.Timber
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,6 +22,12 @@ val timeStamp: String = SimpleDateFormat(
     FILENAME_FORMAT,
     Locale.US
 ).format(System.currentTimeMillis())
+
+fun <T,R> errorHandler(response: Response<T>, obj:Class<R>): R {
+    val errorBody = response.errorBody()?.string()
+    Timber.e(errorBody)
+    return GsonBuilder().create().fromJson(errorBody, obj)
+}
 
 // Untuk kasus Intent Camera
 fun createCustomTempFile(context: Context): File {

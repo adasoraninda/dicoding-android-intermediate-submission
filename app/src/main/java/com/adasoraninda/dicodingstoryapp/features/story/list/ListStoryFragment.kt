@@ -10,14 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.adasoraninda.dicodingstoryapp.R
+import com.adasoraninda.dicodingstoryapp.common.adapter.LoadingStateAdapter
 import com.adasoraninda.dicodingstoryapp.common.dialog.ProfileDialogFragment
 import com.adasoraninda.dicodingstoryapp.databinding.FragmentListStoryBinding
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_TOKEN_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.injector
+import timber.log.Timber
 
 class ListStoryFragment : Fragment() {
 
@@ -55,6 +58,23 @@ class ListStoryFragment : Fragment() {
         setupView()
         actionListeners()
         observeViewModel()
+
+        storiesAdapter.addLoadStateListener { loadStates ->
+            Timber.d("$loadStates\n")
+            binding?.progressBar?.isVisible = loadStates.refresh is LoadState.Loading
+
+            if (loadStates.refresh is LoadState.Error && !loadStates.refresh.endOfPaginationReached) {
+                binding?.listStories?.isVisible = false
+                binding?.textError?.isVisible = true
+            } else {
+                binding?.listStories?.isVisible = true
+                binding?.textError?.isVisible = false
+            }
+
+            if (loadStates.refresh is LoadState.Error) {
+                binding?.textError?.text = (loadStates.refresh as LoadState.Error).error.message
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -67,7 +87,12 @@ class ListStoryFragment : Fragment() {
 
         view.toolbar.menu.findItem(R.id.action_profile).isEnabled = false
 
-        view.listStories.adapter = storiesAdapter
+        view.listStories.adapter = storiesAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                storiesAdapter.retry()
+            }
+        )
+
         view.listStories.layoutManager = LinearLayoutManager(requireContext())
     }
 
@@ -75,7 +100,7 @@ class ListStoryFragment : Fragment() {
         val view = binding ?: return
 
         view.swipeRefresh.setOnRefreshListener {
-            viewModel.getStories()
+            storiesAdapter.refresh()
         }
 
         view.buttonAddStory.setOnClickListener {
@@ -110,14 +135,10 @@ class ListStoryFragment : Fragment() {
                 }
             }
         })
+
     }
 
     private fun observeViewModel() {
-        viewModel.loading.observe(viewLifecycleOwner) { loading ->
-            binding?.textError?.isVisible = !loading
-            binding?.progressBar?.isVisible = loading
-        }
-
         viewModel.enableMenu.observe(viewLifecycleOwner) {
             val menu = binding?.toolbar?.menu?.findItem(R.id.action_profile)
             menu?.isEnabled = it
@@ -126,9 +147,8 @@ class ListStoryFragment : Fragment() {
         viewModel.storiesData.observe(viewLifecycleOwner) {
             binding?.swipeRefresh?.isRefreshing = false
             binding?.textError?.isVisible = false
-            binding?.listStories?.isVisible = it.isNotEmpty()
 
-            storiesAdapter.submitList(it)
+            storiesAdapter.submitData(lifecycle, it)
         }
 
         viewModel.errorMessage.observe(viewLifecycleOwner) { error ->
@@ -142,6 +162,7 @@ class ListStoryFragment : Fragment() {
                 else -> error
             }
 
+            binding?.progressBar?.isVisible = false
             binding?.listStories?.isVisible = false
             binding?.textError?.apply {
                 isVisible = error.isNotEmpty()

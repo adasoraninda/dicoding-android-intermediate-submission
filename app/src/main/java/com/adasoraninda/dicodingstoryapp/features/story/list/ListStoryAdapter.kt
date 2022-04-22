@@ -3,8 +3,8 @@ package com.adasoraninda.dicodingstoryapp.features.story.list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.adasoraninda.dicodingstoryapp.databinding.ItemStoryBinding
 import com.adasoraninda.dicodingstoryapp.model.Story
@@ -16,7 +16,7 @@ private typealias ItemClickListener = ((Array<Pair<View, String>>, Story) -> Uni
 
 class ListStoryAdapter(
     private val clickListener: ItemClickListener? = null
-) : ListAdapter<Story, ListStoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
+) : PagingDataAdapter<Story, ListStoryAdapter.StoryViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,7 +25,7 @@ class ListStoryAdapter(
     }
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        getItem(position)?.let { holder.bind(it) }
     }
 
     inner class StoryViewHolder(

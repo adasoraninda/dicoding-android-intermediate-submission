@@ -2,13 +2,17 @@ package com.adasoraninda.dicodingstoryapp.features.story.list
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
 import com.adasoraninda.dicodingstoryapp.model.Story
 import com.adasoraninda.dicodingstoryapp.model.User
 import com.adasoraninda.dicodingstoryapp.model.UserPreference
 import com.adasoraninda.dicodingstoryapp.service.remote.RemoteDataSource
-import com.adasoraninda.dicodingstoryapp.utils.*
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
+import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
+import com.adasoraninda.dicodingstoryapp.utils.ERROR_TOKEN_EMPTY
+import com.adasoraninda.dicodingstoryapp.utils.formatToken
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -20,14 +24,11 @@ class ListStoryViewModel(
 
     private val _userData = MutableLiveData<User>()
 
-    private val _storiesData = MutableLiveData<List<Story>>()
-    val storiesData: LiveData<List<Story>> get() = _storiesData
+    private val _storiesData = MutableLiveData<PagingData<Story>>()
+    val storiesData: LiveData<PagingData<Story>> get() = _storiesData
 
     private val _profileDialog = MutableLiveData<User?>()
     val profileDialog: LiveData<User?> get() = _profileDialog
-
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean> get() = _loading
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
@@ -49,6 +50,7 @@ class ListStoryViewModel(
         userPreference.getUser().collect(_userData::setValue)
     }
 
+    @VisibleForTesting
     fun getStories() = viewModelScope.launch {
         val token = _userData.value?.token
 
@@ -59,31 +61,25 @@ class ListStoryViewModel(
 
         Timber.d(token)
 
-        remoteDataSource.getStories(token.formatToken())
-            .onStart { _loading.postValue(true) }
-            .onCompletion { _loading.postValue(false) }
+        remoteDataSource.getPagingStories(token.formatToken())
+            .cachedIn(this)
+            .catch { _errorMessage.value = ERROR_EMPTY }
             .collect { result ->
                 Timber.d(result.toString())
-                result.fold(
-                    onFailure = {
-                        _errorMessage.postValue(it.message)
-                    },
-                    onSuccess = {
-                        val storiesRes = it.listStory ?: emptyList()
-                        val stories = storiesRes.map { s ->
-                            Story(
-                                s.id.orEmpty(),
-                                s.name.orEmpty(),
-                                s.description.orEmpty(),
-                                s.photoUrl.orEmpty(),
-                                s.createdAt.orEmpty(),
-                                s.latitude.orEmpty(),
-                                s.longitude.orEmpty()
-                            )
-                        }
-                        _storiesData.postValue(stories)
-                    }
-                )
+
+                val stories = result.map { s ->
+                    Story(
+                        s.id.orEmpty(),
+                        s.name.orEmpty(),
+                        s.description.orEmpty(),
+                        s.photoUrl.orEmpty(),
+                        s.createdAt.orEmpty(),
+                        s.latitude.orEmpty(),
+                        s.longitude.orEmpty()
+                    )
+                }
+
+                _storiesData.postValue(stories)
             }
     }
 
