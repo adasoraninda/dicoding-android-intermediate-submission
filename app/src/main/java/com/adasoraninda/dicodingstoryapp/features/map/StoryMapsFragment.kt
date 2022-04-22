@@ -144,7 +144,7 @@ class StoryMapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun observeViewModel() {
-        viewModel.errorMessage.observe(this) { event ->
+        viewModel.errorMessage.observe(viewLifecycleOwner) { event ->
             var message = event.get() ?: return@observe
 
             if (message == SUCCESS_EMPTY) {
@@ -159,7 +159,7 @@ class StoryMapsFragment : Fragment(), OnMapReadyCallback {
             snackbar?.show()
         }
 
-        viewModel.storiesData.observe(this) { stories ->
+        viewModel.storiesData.observe(viewLifecycleOwner) { stories ->
             mMap.clear()
 
             val size =
@@ -175,29 +175,31 @@ class StoryMapsFragment : Fragment(), OnMapReadyCallback {
                 StoryLocationDialogFragment(
                     stories,
                     onCancel = { viewModel.dismissDialog() }) {
+                    viewModel.dismissDialog()
                     viewModel.setCameraFocus(
                         it.latitude.toDouble(),
                         it.longitude.toDouble()
                     )
-                    viewModel.dismissDialog()
                 }
         }
 
-        viewModel.showDialog.observe(this) { show ->
-            (parentFragmentManager.findFragmentByTag(StoryLocationDialogFragment.TAG)
-                    as? StoryLocationDialogFragment)?.dismiss()
+        viewModel.showDialog.observe(viewLifecycleOwner) { show ->
+            (parentFragmentManager
+                .findFragmentByTag(StoryLocationDialogFragment.TAG) as? StoryLocationDialogFragment)
+                ?.dismiss()
 
             if (!show) return@observe
 
             storyDialog?.show(parentFragmentManager, StoryLocationDialogFragment.TAG)
         }
 
-        viewModel.cameraFocus.observe(this) { latLong ->
+        viewModel.cameraFocus.observe(viewLifecycleOwner) { latLong ->
             val latLng = LatLng(latLong[0], latLong[1])
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10F))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15F))
         }
 
-        viewModel.loading.observe(this) { loading ->
+        viewModel.loading.observe(viewLifecycleOwner) { loading ->
+            binding?.textDataLoaded?.isEnabled = !loading
             binding?.imageLoadMore?.isEnabled = !loading
             binding?.progressBar?.isVisible = loading
         }

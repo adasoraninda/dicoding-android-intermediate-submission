@@ -10,26 +10,39 @@
     android:padding="8dp">
 
     <TextView
+        android:id="@+id/text_no"
+        style="@style/TitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1" />
+
+    <TextView
         android:id="@+id/text_name"
         style="@style/TitleStyle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_no"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/lorem/random" />
 
     <TextView
         android:id="@+id/text_lat_lot"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textAlignment="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/text_name"
+        app:layout_constraintStart_toStartOf="@id/text_name"
         app:layout_constraintTop_toBottomOf="@id/text_name"
         tools:text="@string/app_name" />
 

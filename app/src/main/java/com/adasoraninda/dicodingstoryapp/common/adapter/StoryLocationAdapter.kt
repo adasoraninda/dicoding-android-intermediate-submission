@@ -29,6 +29,9 @@ class StoryLocationAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Story) {
+            binding.textNo.text = binding.root.context.getString(
+                R.string.format_number, bindingAdapterPosition.plus(1)
+            )
             binding.textName.text = data.name
             binding.textLatLot.text = binding.root.context.getString(
                 R.string.format_location,

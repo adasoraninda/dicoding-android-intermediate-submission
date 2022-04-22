@@ -22,6 +22,7 @@
     <string name="cd_add_button_story">Adding story</string>
     <string name="data_loaded">Story loaded: %d</string>
     <string name="format_location">%s, %s</string>
+    <string name="format_number">%d. </string>
 
     <string name="success_occurred">Success</string>
     <string name="success_empty">No new data found</string>
