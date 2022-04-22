@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.adasoraninda.dicodingstoryapp.R
+import com.adasoraninda.dicodingstoryapp.common.dialog.StoryLocationDialogFragment
 import com.adasoraninda.dicodingstoryapp.databinding.FragmentStoryMapsBinding
 import com.adasoraninda.dicodingstoryapp.model.Story
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
@@ -32,6 +33,7 @@ class StoryMapsFragment : Fragment(), OnMapReadyCallback {
     private val binding get() = _binding
 
     private var snackbar: Snackbar? = null
+    private var storyDialog: StoryLocationDialogFragment? = null
 
     private val viewModel by viewModels<StoryMapsViewModel> {
         injector().storyMapsFactory
@@ -128,6 +130,10 @@ class StoryMapsFragment : Fragment(), OnMapReadyCallback {
             findNavController().navigate(directions)
         }
 
+        binding?.textDataLoaded?.setOnClickListener {
+            viewModel.showDialog()
+        }
+
         binding?.imageBackButton?.setOnClickListener {
             requireActivity().onBackPressed()
         }
@@ -164,6 +170,31 @@ class StoryMapsFragment : Fragment(), OnMapReadyCallback {
             binding?.textDataLoaded?.text = getString(R.string.data_loaded, size)
 
             stories.forEach(this::createMarker)
+
+            storyDialog =
+                StoryLocationDialogFragment(
+                    stories,
+                    onCancel = { viewModel.dismissDialog() }) {
+                    viewModel.setCameraFocus(
+                        it.latitude.toDouble(),
+                        it.longitude.toDouble()
+                    )
+                    viewModel.dismissDialog()
+                }
+        }
+
+        viewModel.showDialog.observe(this) { show ->
+            (parentFragmentManager.findFragmentByTag(StoryLocationDialogFragment.TAG)
+                    as? StoryLocationDialogFragment)?.dismiss()
+
+            if (!show) return@observe
+
+            storyDialog?.show(parentFragmentManager, StoryLocationDialogFragment.TAG)
+        }
+
+        viewModel.cameraFocus.observe(this) { latLong ->
+            val latLng = LatLng(latLong[0], latLong[1])
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10F))
         }
 
         viewModel.loading.observe(this) { loading ->

@@ -32,6 +32,12 @@ class StoryMapsViewModel(
     private val _errorMessage = MutableLiveEvent<String?>()
     val errorMessage: LiveEvent<String?> get() = _errorMessage
 
+    private val _showDialog = MutableLiveData<Boolean>()
+    val showDialog: LiveData<Boolean> get() = _showDialog
+
+    private val _cameraFocus = MutableLiveData<Array<Double>>()
+    val cameraFocus: LiveData<Array<Double>> get() = _cameraFocus
+
     private var page: Int = 0
     private val location: Int = 1
 
@@ -62,6 +68,18 @@ class StoryMapsViewModel(
         }
 
         return listData.toList()
+    }
+
+    fun setCameraFocus(lat: Double, lon: Double) {
+        _cameraFocus.value = arrayOf(lat, lon)
+    }
+
+    fun showDialog() {
+        _showDialog.value = true
+    }
+
+    fun dismissDialog() {
+        _showDialog.value = false
     }
 
     fun getAllStories() = viewModelScope.launch {

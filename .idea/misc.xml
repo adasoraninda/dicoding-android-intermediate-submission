@@ -26,6 +26,7 @@
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_info.xml" value="0.20416666666666666" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_info_auth.xml" value="0.2" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_profile.xml" value="0.20416666666666666" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_story_location.xml" value="0.18981481481481483" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_dialog_success.xml" value="0.20416666666666666" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_list_story.xml" value="0.18" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_login.xml" value="0.16" />
@@ -34,6 +35,7 @@
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_splash.xml" value="0.2" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/fragment_story_maps.xml" value="0.1388888888888889" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/item_story.xml" value="0.18" />
+        <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/layout/item_story_location.xml" value="0.20416666666666666" />
         <entry key="..\:/DATA-DEDA/dicoding/android/intermediate/submission/DicodingStoryApp/app/src/main/res/menu/list_story_menu.xml" value="0.20416666666666666" />
       </map>
     </option>
