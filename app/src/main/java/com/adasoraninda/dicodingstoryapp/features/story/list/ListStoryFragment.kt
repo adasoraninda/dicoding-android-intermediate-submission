@@ -79,8 +79,8 @@ class ListStoryFragment : Fragment() {
 
             // scroll to top when refresh data
             if (loadStates.refresh is LoadState.NotLoading
-                && loadStates.prepend.endOfPaginationReached
-                && !loadStates.append.endOfPaginationReached
+                &&  loadStates.source.prepend.endOfPaginationReached
+                && !loadStates.source.append.endOfPaginationReached
             ) {
                 binding?.listStories?.smoothScrollToPosition(0)
             }

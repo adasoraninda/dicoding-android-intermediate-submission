@@ -10,7 +10,7 @@ import com.adasoraninda.dicodingstoryapp.common.validation.InputValidation
 import com.adasoraninda.dicodingstoryapp.model.InputLogin
 import com.adasoraninda.dicodingstoryapp.model.User
 import com.adasoraninda.dicodingstoryapp.model.UserPreference
-import com.adasoraninda.dicodingstoryapp.service.remote.RemoteDataSource
+import com.adasoraninda.dicodingstoryapp.service.remote.IRemoteDataSource
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.Event
 import com.adasoraninda.dicodingstoryapp.utils.LiveEvent
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class LoginViewModel(
-    private val remoteDataSource: RemoteDataSource,
+    private val remoteDataSource: IRemoteDataSource,
     private val userPreference: UserPreference,
     private val validation: InputValidation
 ) : ViewModel() {

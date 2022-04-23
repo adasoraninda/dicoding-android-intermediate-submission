@@ -8,7 +8,7 @@ import androidx.paging.map
 import com.adasoraninda.dicodingstoryapp.model.Story
 import com.adasoraninda.dicodingstoryapp.model.User
 import com.adasoraninda.dicodingstoryapp.model.UserPreference
-import com.adasoraninda.dicodingstoryapp.service.remote.RemoteDataSource
+import com.adasoraninda.dicodingstoryapp.service.remote.IRemoteDataSource
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_TOKEN_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.formatToken
@@ -18,7 +18,7 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 class ListStoryViewModel(
-    private val remoteDataSource: RemoteDataSource,
+    private val remoteDataSource: IRemoteDataSource,
     private val userPreference: UserPreference
 ) : ViewModel() {
 

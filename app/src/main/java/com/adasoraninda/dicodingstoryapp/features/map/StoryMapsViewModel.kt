@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.adasoraninda.dicodingstoryapp.model.Story
 import com.adasoraninda.dicodingstoryapp.model.User
 import com.adasoraninda.dicodingstoryapp.model.UserPreference
+import com.adasoraninda.dicodingstoryapp.service.remote.IRemoteDataSource
 import com.adasoraninda.dicodingstoryapp.service.remote.RemoteDataSource
 import com.adasoraninda.dicodingstoryapp.utils.*
 import kotlinx.coroutines.flow.onCompletion
@@ -17,7 +18,7 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 class StoryMapsViewModel(
-    private val remoteDataSource: RemoteDataSource,
+    private val remoteDataSource: IRemoteDataSource,
     private val userPreference: UserPreference
 ) : ViewModel() {
 

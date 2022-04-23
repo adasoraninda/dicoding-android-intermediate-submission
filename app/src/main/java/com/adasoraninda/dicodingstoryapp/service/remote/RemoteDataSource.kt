@@ -31,9 +31,9 @@ import kotlin.coroutines.CoroutineContext
 class RemoteDataSource(
     private val service: DicodingStoryApi,
     private val dispatcher: CoroutineContext = Dispatchers.IO,
-) {
+) : IRemoteDataSource {
 
-    fun register(
+    override fun register(
         name: String,
         email: String,
         password: String,
@@ -62,7 +62,7 @@ class RemoteDataSource(
             )
         }
 
-    fun login(
+    override fun login(
         email: String,
         password: String
     ): Flow<LoginResponse> = flow {
@@ -92,7 +92,7 @@ class RemoteDataSource(
             })
         }
 
-    fun getPagingStories(token: String, size: Int = 10): Flow<PagingData<StoryResultResponse>> {
+    override fun getPagingStories(token: String, size: Int): Flow<PagingData<StoryResultResponse>> {
         return Pager(
             config = PagingConfig(
                 pageSize = size
@@ -104,11 +104,11 @@ class RemoteDataSource(
             .flowOn(dispatcher)
     }
 
-    fun getStories(
+    override fun getStories(
         token: String,
-        page: Int = 1,
-        size: Int = 10,
-        location: Int = 0,
+        page: Int,
+        size: Int,
+        location: Int,
     ): Flow<Result<StoryResponse>> = flow {
         val response = service.getStories(token, page, size, location)
 
@@ -126,7 +126,7 @@ class RemoteDataSource(
         .flowOn(dispatcher)
         .catch { emit(Result.failure(IllegalStateException(ERROR_EMPTY))) }
 
-    fun addStory(
+    override fun addStory(
         body: InputAddStory
     ): Flow<BaseResponse> = flow {
         Timber.d(body.toString())

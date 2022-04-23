@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.adasoraninda.dicodingstoryapp.common.validation.InputValidation
 import com.adasoraninda.dicodingstoryapp.model.InputRegister
-import com.adasoraninda.dicodingstoryapp.service.remote.RemoteDataSource
+import com.adasoraninda.dicodingstoryapp.service.remote.IRemoteDataSource
 import com.adasoraninda.dicodingstoryapp.utils.*
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class RegisterViewModel(
-    private val remoteDataSource: RemoteDataSource,
+    private val remoteDataSource: IRemoteDataSource,
     private val validation: InputValidation
 ) : ViewModel() {
 
@@ -32,7 +32,11 @@ class RegisterViewModel(
     val dialogInfoError: LiveData<String?> get() = _dialogInfoError
 
     fun register(name: String?, email: String?, password: String?) = viewModelScope.launch {
-        val isInputValid = checkInput(name, email, password)
+        val inputRegister = InputRegister(name, email, password)
+        val isInputValid = checkInput(inputRegister) {
+            _errorMessage.value = Event(it)
+        }
+
         if (!isInputValid) return@launch
 
         remoteDataSource.register(name!!, email!!, password!!)
@@ -61,13 +65,8 @@ class RegisterViewModel(
     }
 
     @VisibleForTesting
-    fun checkInput(name: String?, email: String?, password: String?): Boolean {
-        val inputRegister = InputRegister(name, email, password)
-        val isInputValid = validation.validate(inputRegister) {
-            _errorMessage.value = Event(it)
-        }
-
-        return isInputValid
+    fun checkInput(inputRegister: InputRegister, message: (Int) -> Unit): Boolean {
+        return validation.validate(inputRegister, message)
     }
 
 }
