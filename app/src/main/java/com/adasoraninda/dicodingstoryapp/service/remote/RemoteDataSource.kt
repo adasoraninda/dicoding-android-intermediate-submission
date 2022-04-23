@@ -15,7 +15,6 @@ import com.adasoraninda.dicodingstoryapp.service.remote.response.StoryResultResp
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.errorHandler
 import com.adasoraninda.dicodingstoryapp.utils.formatToken
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -27,10 +26,11 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 class RemoteDataSource(
     private val service: DicodingStoryApi,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcher: CoroutineContext = Dispatchers.IO,
 ) {
 
     fun register(
@@ -129,9 +129,13 @@ class RemoteDataSource(
     fun addStory(
         body: InputAddStory
     ): Flow<BaseResponse> = flow {
+        Timber.d(body.toString())
+
         val token = body.token ?: throw IllegalStateException()
         val file = body.file ?: throw IllegalStateException()
         val desc = body.description ?: throw IllegalStateException()
+        val lat = body.lat
+        val lon = body.lon
 
         val descRequest = desc.toRequestBody("text/plain".toMediaType())
         val imageRequest = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -141,7 +145,14 @@ class RemoteDataSource(
             imageRequest
         )
 
-        val response = service.addStory(token.formatToken(), imagePart, descRequest)
+        val response = if (lat != null && lon != null) {
+            val latRequest = lat.toString().toRequestBody("text/plain".toMediaType())
+            val lonRequest = lon.toString().toRequestBody("text/plain".toMediaType())
+
+            service.addStory(token.formatToken(), imagePart, descRequest, latRequest, lonRequest)
+        } else {
+            service.addStory(token.formatToken(), imagePart, descRequest)
+        }
 
         if (response.isSuccessful.not()) {
             emit(errorHandler(response, BaseResponse::class.java))

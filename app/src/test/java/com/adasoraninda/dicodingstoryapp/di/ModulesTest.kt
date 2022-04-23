@@ -1,4 +1,4 @@
-package com.adasoraninda.dicodingstoryapp
+package com.adasoraninda.dicodingstoryapp.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

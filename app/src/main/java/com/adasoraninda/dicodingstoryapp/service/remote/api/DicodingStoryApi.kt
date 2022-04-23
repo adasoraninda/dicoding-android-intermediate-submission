@@ -35,6 +35,16 @@ interface DicodingStoryApi {
     suspend fun addStory(
         @Header(HEADER_AUTH) token: String,
         @Part photo: MultipartBody.Part,
-        @Part(PART_DESCRIPTION) description: RequestBody
+        @Part(PART_DESCRIPTION) description: RequestBody,
+        @Part(PART_LAT) lat: RequestBody,
+        @Part(PART_LON) lon: RequestBody,
+    ): Response<BaseResponse>
+
+    @Multipart
+    @POST(value = PATH_STORIES)
+    suspend fun addStory(
+        @Header(HEADER_AUTH) token: String,
+        @Part photo: MultipartBody.Part,
+        @Part(PART_DESCRIPTION) description: RequestBody,
     ): Response<BaseResponse>
 }

@@ -1,5 +1,6 @@
 package com.adasoraninda.dicodingstoryapp.features.story.add
 
+import android.location.Location
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -38,6 +39,7 @@ class AddStoryViewModel(
     private val _userData = MutableLiveData<User>()
 
     private var imageFile: File? = null
+    private var location: Location? = null
 
     init {
         getUser()
@@ -51,7 +53,13 @@ class AddStoryViewModel(
     fun addStory(description: String?) = viewModelScope.launch {
         val token = _userData.value?.token
 
-        val inputAddStory = InputAddStory(token, imageFile, description)
+        val inputAddStory = InputAddStory(
+            token,
+            imageFile,
+            description,
+            lat = location?.latitude,
+            lon = location?.longitude
+        )
         val isInputValid = checkInput(inputAddStory)
         if (!isInputValid) return@launch
 
@@ -93,5 +101,9 @@ class AddStoryViewModel(
 
     fun setImageFile(file: File?) {
         imageFile = file
+    }
+
+    fun setLocation(location: Location?) {
+        this.location = location
     }
 }

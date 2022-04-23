@@ -1,5 +1,6 @@
-package com.adasoraninda.dicodingstoryapp
+package com.adasoraninda.dicodingstoryapp.validation
 
+import com.adasoraninda.dicodingstoryapp.R
 import com.adasoraninda.dicodingstoryapp.common.validation.InputValidation
 import com.adasoraninda.dicodingstoryapp.features.story.add.AddStoryValidation
 import com.adasoraninda.dicodingstoryapp.model.InputAddStory

@@ -63,6 +63,7 @@ class ListStoryFragment : Fragment() {
             Timber.d("$loadStates\n")
             binding?.progressBar?.isVisible = loadStates.refresh is LoadState.Loading
 
+            // initialize loading & error in center when occur at first
             if (loadStates.refresh is LoadState.Error && !loadStates.refresh.endOfPaginationReached) {
                 binding?.listStories?.isVisible = false
                 binding?.textError?.isVisible = true
@@ -71,8 +72,17 @@ class ListStoryFragment : Fragment() {
                 binding?.textError?.isVisible = false
             }
 
+            // set error text
             if (loadStates.refresh is LoadState.Error) {
                 binding?.textError?.text = (loadStates.refresh as LoadState.Error).error.message
+            }
+
+            // scroll to top when refresh data
+            if (loadStates.refresh is LoadState.NotLoading
+                && loadStates.prepend.endOfPaginationReached
+                && !loadStates.append.endOfPaginationReached
+            ) {
+                binding?.listStories?.smoothScrollToPosition(0)
             }
         }
     }

@@ -10,6 +10,8 @@ const val PATH_LOGIN = "$API_VERSION/login"
 const val PATH_STORIES = "$API_VERSION/stories"
 
 const val PART_DESCRIPTION = "description"
+const val PART_LAT = "lat"
+const val PART_LON = "lon"
 
 const val QUERY_PAGE = "page"
 const val QUERY_PAGE_SIZE = "size"

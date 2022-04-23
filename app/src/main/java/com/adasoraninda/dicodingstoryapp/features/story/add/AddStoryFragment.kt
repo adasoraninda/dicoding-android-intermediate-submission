@@ -24,12 +24,15 @@ import com.adasoraninda.dicodingstoryapp.common.dialog.AddPhotoDialogFragment
 import com.adasoraninda.dicodingstoryapp.common.dialog.InfoDialogFragment
 import com.adasoraninda.dicodingstoryapp.databinding.FragmentAddStoryBinding
 import com.adasoraninda.dicodingstoryapp.utils.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.io.File
 
 class AddStoryFragment : Fragment() {
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private var _binding: FragmentAddStoryBinding? = null
     private val binding get() = _binding
@@ -51,7 +54,24 @@ class AddStoryFragment : Fragment() {
                 getString(R.string.error_permission),
                 Toast.LENGTH_SHORT
             ).show()
+
             findNavController().popBackStack()
+        }
+    }
+
+    private val requestLocationPermission = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                getMyLocation()
+            }
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                getMyLocation()
+            }
+            else -> {
+                Timber.d("Permission location not granted, location value will be null")
+            }
         }
     }
 
@@ -102,12 +122,25 @@ class AddStoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
         requireActivity().onBackPressedDispatcher.addCallback {
             findNavController().popBackStack()
         }
 
-        if (!allPermissionsGranted()) {
+        if (!checkPermission(Manifest.permission.CAMERA)) {
             requestCameraPermission.launch(Manifest.permission.CAMERA)
+        }
+
+        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
+            !checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+        ) {
+            requestLocationPermission.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
         }
 
         actionListeners()
@@ -120,8 +153,24 @@ class AddStoryFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
+    private fun getMyLocation() {
+        try {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    Timber.d(location.toString())
+                    viewModel.setLocation(location)
+                }
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun actionListeners() {
@@ -230,8 +279,6 @@ class AddStoryFragment : Fragment() {
 
     companion object {
         const val CAMERA_X_RESULT = 200
-
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
 }
