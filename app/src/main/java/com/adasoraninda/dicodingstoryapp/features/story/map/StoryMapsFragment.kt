@@ -1,13 +1,15 @@
-package com.adasoraninda.dicodingstoryapp.features.map
+package com.adasoraninda.dicodingstoryapp.features.story.map
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.adasoraninda.dicodingstoryapp.R
 import com.adasoraninda.dicodingstoryapp.common.dialog.StoryLocationDialogFragment
@@ -56,8 +58,13 @@ class StoryMapsFragment : Fragment(), OnMapReadyCallback {
             findNavController().popBackStack()
         }
 
+        if (savedInstanceState == null && viewModel.initialize.not()) {
+            viewModel.initialize()
+        }
+
         binding?.textDataLoaded?.text = getString(R.string.data_loaded, 0)
         binding?.mapView?.getMapAsync(this)
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

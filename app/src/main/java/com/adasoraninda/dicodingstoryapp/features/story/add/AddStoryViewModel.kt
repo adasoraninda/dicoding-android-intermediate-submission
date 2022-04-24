@@ -1,7 +1,6 @@
 package com.adasoraninda.dicodingstoryapp.features.story.add
 
 import android.location.Location
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +10,6 @@ import com.adasoraninda.dicodingstoryapp.model.InputAddStory
 import com.adasoraninda.dicodingstoryapp.model.User
 import com.adasoraninda.dicodingstoryapp.model.UserPreference
 import com.adasoraninda.dicodingstoryapp.service.remote.IRemoteDataSource
-import com.adasoraninda.dicodingstoryapp.service.remote.RemoteDataSource
 import com.adasoraninda.dicodingstoryapp.utils.*
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -39,14 +37,16 @@ class AddStoryViewModel(
 
     private val _userData = MutableLiveData<User>()
 
-    private var imageFile: File? = null
-    private var location: Location? = null
+    var imageFile: File? = null
+    var location: Location? = null
+    var initialize = false
+        private set
 
-    init {
+    fun initialize() {
         getUser()
+        initialize = true
     }
 
-    @VisibleForTesting
     fun getUser() = viewModelScope.launch {
         userPreference.getUser().collect(_userData::setValue)
     }
@@ -61,8 +61,11 @@ class AddStoryViewModel(
             lat = location?.latitude,
             lon = location?.longitude
         )
-        val isInputValid = checkInput(inputAddStory)
-        if (!isInputValid) return@launch
+        val messageValidation = validation.validate(inputAddStory)
+        if (messageValidation != null) {
+            _errorMessage.value = Event(messageValidation)
+            return@launch
+        }
 
         Timber.d(inputAddStory.toString())
 
@@ -83,28 +86,11 @@ class AddStoryViewModel(
             }
     }
 
-    @VisibleForTesting
-    fun checkInput(inputAddStory: InputAddStory): Boolean {
-        val isInputValid = validation.validate(inputAddStory) {
-            _errorMessage.value = Event(it)
-        }
-
-        return isInputValid
-    }
-
     fun dismissSuccessDialog() {
         _dialogInfoSuccess.value = null
     }
 
     fun dismissErrorDialog() {
         _dialogInfoError.value = null
-    }
-
-    fun setImageFile(file: File?) {
-        imageFile = file
-    }
-
-    fun setLocation(location: Location?) {
-        this.location = location
     }
 }

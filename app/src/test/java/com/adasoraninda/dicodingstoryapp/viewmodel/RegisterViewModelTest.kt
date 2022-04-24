@@ -10,13 +10,13 @@ import com.adasoraninda.dicodingstoryapp.utils.MainCoroutineRule
 import com.adasoraninda.dicodingstoryapp.utils.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.mockito.kotlin.argumentCaptor
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 
@@ -33,6 +33,10 @@ class RegisterViewModelTest {
     private lateinit var validation: InputValidation
     private lateinit var viewModel: RegisterViewModel
 
+    private val name = "name"
+    private val email = "email@email.com"
+    private val password = "123456"
+
     @Before
     fun setup() {
         validation = mock()
@@ -41,68 +45,59 @@ class RegisterViewModelTest {
     }
 
     @Test
-    fun register_success_test() {
-        val inputRegister = InputRegister("name", "email@email.com", "123456")
-        val resultResponse = flowOf(BaseResponse(error = false, message = "success"))
-        val argMessageCaptor = argumentCaptor<Function1<Int, Unit>>()
+    fun register_success_test() = runTest {
+        // arrange
+        val inputCaptor = argumentCaptor<InputRegister>()
+        val responseSuccess = BaseResponse(error = false, message = "Success")
+        val mockResult = flowOf(responseSuccess)
 
-        `when`(validation.validate(inputRegister, eq(argMessageCaptor.capture()))).thenReturn(true)
+        `when`(validation.validate(inputCaptor.capture()))
+            .thenReturn(null)
+        `when`(remoteDataSource.register(name, email, password))
+            .thenReturn(mockResult)
 
-        `when`(
-            remoteDataSource.register(
-                inputRegister.name!!,
-                inputRegister.email!!,
-                inputRegister.password!!
-            )
-        ).thenReturn(resultResponse)
+        // act
+        viewModel.register(name, email, password)
 
-        viewModel.register(
-            inputRegister.name!!,
-            inputRegister.email!!,
-            inputRegister.password!!
-        )
+        val inputUser = inputCaptor.firstValue
+        val message = viewModel.dialogInfoSuccess.getOrAwaitValue()
 
-        verify(validation).validate(inputRegister,  eq(argMessageCaptor.capture()))
-        verify(remoteDataSource).register(
-            inputRegister.name!!,
-            inputRegister.email!!,
-            inputRegister.password!!
-        )
+        // assert
+        verify(validation, only()).validate(inputCaptor.capture())
+        verify(remoteDataSource, times(1)).register(name, email, password)
+        Assert.assertEquals(name, inputUser.name)
+        Assert.assertEquals(email, inputUser.email)
+        Assert.assertEquals(password, inputUser.password)
+        Assert.assertNotNull(message)
+        Assert.assertEquals(responseSuccess.message, message)
     }
 
     @Test
-    fun register_failure_test() {
+    fun register_failure_test() = runTest {
+        // arrange
+        val inputCaptor = argumentCaptor<InputRegister>()
+        val responseError = BaseResponse(error = true, message = "Error")
+        val mockResult = flowOf(responseError)
 
-    }
+        `when`(validation.validate(inputCaptor.capture()))
+            .thenReturn(null)
+        `when`(remoteDataSource.register(name, email, password))
+            .thenReturn(mockResult)
 
-    @Test
-    fun should_return_true_when_input_is_correct() {
-        val expectedValue = true
-        var expectedMessage = 0
-        val inputRegister = InputRegister("name", "email@email.com", "123456")
-        val message = { message: Int -> expectedMessage = message }
+        // act
+        viewModel.register(name, email, password)
 
-        `when`(validation.validate(inputRegister, message)).thenReturn(expectedValue)
-        val result = viewModel.checkInput(inputRegister, message)
+        val inputUser = inputCaptor.firstValue
+        val message = viewModel.dialogInfoError.getOrAwaitValue()
 
-        verify(validation).validate(inputRegister, message)
-        Assert.assertEquals(expectedValue, result)
-        Assert.assertEquals(0, expectedMessage)
-    }
-
-    @Test
-    fun should_return_false_when_input_is_incorrect() {
-        val expectedValue = false
-        var expectedMessage = 0
-        val inputRegister = InputRegister("", "", "")
-        val message = { message: Int -> expectedMessage = message }
-
-        `when`(validation.validate(inputRegister, message)).thenReturn(expectedValue)
-        val result = viewModel.checkInput(inputRegister, message)
-
-        verify(validation).validate(inputRegister, message)
-        Assert.assertEquals(expectedValue, result)
-        Assert.assertEquals(0, expectedMessage)
+        // assert
+        verify(validation, only()).validate(inputCaptor.capture())
+        verify(remoteDataSource, times(1)).register(name, email, password)
+        Assert.assertEquals(name, inputUser.name)
+        Assert.assertEquals(email, inputUser.email)
+        Assert.assertEquals(password, inputUser.password)
+        Assert.assertNotNull(message)
+        Assert.assertEquals(responseError.message, message)
     }
 
     @Test

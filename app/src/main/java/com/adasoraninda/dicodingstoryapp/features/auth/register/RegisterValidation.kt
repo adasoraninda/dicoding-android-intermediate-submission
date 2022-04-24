@@ -7,40 +7,35 @@ import com.adasoraninda.dicodingstoryapp.model.InputRegister
 
 class RegisterValidation : InputValidation {
 
-    override fun <T> validate(data: T, message: ((Int) -> Unit)?): Boolean {
-        if (data !is InputRegister) return false
+    override fun <T> validate(data: T): Int? {
+        if (data !is InputRegister) return R.string.error_input_validation
 
         val name = data.name
 
         if (name.isNullOrEmpty()) {
-            message?.invoke(R.string.error_input_name)
-            return false
+            return R.string.error_input_name
         }
 
         val email = data.email
 
         if (email.isNullOrEmpty()) {
-            message?.invoke(R.string.error_input_email)
-            return false
+            return R.string.error_input_email
         }
 
         if (PatternsCompat.EMAIL_ADDRESS.matcher(email).matches().not()) {
-            message?.invoke(R.string.error_input_email)
-            return false
+            return R.string.error_input_email
         }
 
         val password = data.password
 
         if (password.isNullOrEmpty()) {
-            message?.invoke(R.string.error_input_password)
-            return false
+            return R.string.error_input_password
         }
 
         if (password.length < 6) {
-            message?.invoke(R.string.error_input_password)
-            return false
+            return R.string.error_input_password
         }
 
-        return true
+        return null
     }
 }

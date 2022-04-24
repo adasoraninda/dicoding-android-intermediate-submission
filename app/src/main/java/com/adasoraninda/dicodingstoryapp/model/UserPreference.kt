@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
-open class UserPreference(private val dataStore: DataStore<Preferences>) {
+class UserPreference(private val dataStore: DataStore<Preferences>) {
 
-    open fun getUser(): Flow<User> {
+    fun getUser(): Flow<User> {
         return dataStore.data.map { pref ->
             User(
                 userId = pref[USER_ID_KEY].orEmpty(),
@@ -23,7 +23,7 @@ open class UserPreference(private val dataStore: DataStore<Preferences>) {
         }
     }
 
-    open fun isLoggedIn(): Flow<Boolean> {
+    fun isLoggedIn(): Flow<Boolean> {
         return dataStore.data.map { pref ->
             pref[TOKEN_KEY].isNullOrEmpty().not()
         }

@@ -18,75 +18,60 @@ class LoginValidationTest {
     }
 
     @Test
-    fun should_return_false_when_data_instance_is_not_input_login() {
+    fun should_return_message_invalid_when_data_instance_is_not_input_login() {
         val data = "" // not instance of InputLogin
-        val result = validation.validate(data)
+        val expectedMessage = R.string.error_input_validation
+        val resultMessage = validation.validate(data)
 
-        assertEquals(false, result)
+        assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_false_when_email_is_empty() {
+    fun should_return_message_invalid_email_when_email_is_empty() {
         val expectedMessage = R.string.error_input_email
-        var actualMessage = 0
 
         val inputLogin = InputLogin(email = "")
-        val result = validation.validate(inputLogin) {
-            actualMessage = it
-        }
+        val resultMessage = validation.validate(inputLogin)
 
-        assertEquals(expectedMessage, actualMessage)
-        assertEquals(false, result)
+        assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_false_when_email_pattern_is_incorrect() {
+    fun should_return_message_invalid_email_when_email_pattern_is_incorrect() {
         val expectedMessage = R.string.error_input_email
-        var actualMessage = 0
 
         val inputLogin = InputLogin(email = "ada")
-        val result = validation.validate(inputLogin) {
-            actualMessage = it
-        }
+        val resultMessage = validation.validate(inputLogin)
 
-        assertEquals(expectedMessage, actualMessage)
-        assertEquals(false, result)
+        assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_false_when_password_is_empty() {
+    fun should_return_message_invalid_password_when_password_is_empty() {
         val expectedMessage = R.string.error_input_password
-        var actualMessage = 0
 
         val inputLogin = InputLogin(email = "ada@ada.com", password = "")
-        val result = validation.validate(inputLogin) {
-            actualMessage = it
-        }
+        val resultMessage = validation.validate(inputLogin)
 
-        assertEquals(expectedMessage, actualMessage)
-        assertEquals(false, result)
+        assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_false_when_password_length_is_less_than_6_chars() {
+    fun should_return_message_invalid_password_when_password_length_is_less_than_6_chars() {
         val expectedMessage = R.string.error_input_password
-        var actualMessage = 0
 
         val inputLogin = InputLogin(email = "ada@ada.com", password = "ada")
-        val result = validation.validate(inputLogin) {
-            actualMessage = it
-        }
+        val resultMessage = validation.validate(inputLogin)
 
-        assertEquals(expectedMessage, actualMessage)
-        assertEquals(false, result)
+        assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_true_when_email_and_password_valid() {
+    fun should_return_null_when_email_and_password_valid() {
         val inputLogin = InputLogin(email = "ada@ada.com", password = "adaada")
-        val result = validation.validate(inputLogin)
+        val resultMessage = validation.validate(inputLogin)
 
-        assertEquals(true, result)
+        assertEquals(null, resultMessage)
     }
 
 }

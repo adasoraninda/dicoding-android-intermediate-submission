@@ -7,7 +7,7 @@ import com.adasoraninda.dicodingstoryapp.features.auth.login.LoginValidation
 import com.adasoraninda.dicodingstoryapp.features.auth.login.LoginViewModel
 import com.adasoraninda.dicodingstoryapp.features.auth.register.RegisterValidation
 import com.adasoraninda.dicodingstoryapp.features.auth.register.RegisterViewModel
-import com.adasoraninda.dicodingstoryapp.features.map.StoryMapsViewModel
+import com.adasoraninda.dicodingstoryapp.features.story.map.StoryMapsViewModel
 import com.adasoraninda.dicodingstoryapp.features.splash.SplashViewModel
 import com.adasoraninda.dicodingstoryapp.features.story.add.AddStoryValidation
 import com.adasoraninda.dicodingstoryapp.features.story.add.AddStoryViewModel

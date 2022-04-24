@@ -59,7 +59,7 @@
 
     <fragment
         android:id="@+id/fragment_map"
-        android:name="com.adasoraninda.dicodingstoryapp.features.map.StoryMapsFragment"
+        android:name="com.adasoraninda.dicodingstoryapp.features.story.map.StoryMapsFragment"
         tools:layout="@layout/fragment_story_maps" >
 
         <action

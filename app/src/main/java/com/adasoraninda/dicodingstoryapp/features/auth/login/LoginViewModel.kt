@@ -1,6 +1,5 @@
 package com.adasoraninda.dicodingstoryapp.features.auth.login
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,8 +38,12 @@ class LoginViewModel(
     val loginSuccess: LiveEvent<Unit> get() = _loginSuccess
 
     fun login(email: String?, password: String?) = viewModelScope.launch {
-        val isInputValid = checkInput(email, password)
-        if (!isInputValid) return@launch
+        val messageValidation = validation.validate(InputLogin(email, password))
+
+        if (messageValidation != null) {
+            _errorMessage.value = Event(messageValidation)
+            return@launch
+        }
 
         remoteDataSource.login(email!!, password!!)
             .onStart { _loading.postValue(true) }
@@ -70,16 +73,6 @@ class LoginViewModel(
 
     fun dismissError() {
         _dialogInfoError.value = null
-    }
-
-    @VisibleForTesting
-    fun checkInput(email: String?, password: String?): Boolean {
-        val inputLogin = InputLogin(email, password)
-        val isInputValid = validation.validate(inputLogin) {
-            _errorMessage.value = Event(it)
-        }
-
-        return isInputValid
     }
 
 }

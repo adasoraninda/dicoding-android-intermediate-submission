@@ -18,89 +18,70 @@ class RegisterValidationTest {
     }
 
     @Test
-    fun should_return_false_when_data_instance_is_not_input_register() {
+    fun should_return_message_invalid_when_data_instance_is_not_input_register() {
         val data = "" // not instance of InputRegister
-        val result = validation.validate(data)
+        val expectedMessage = R.string.error_input_validation
+        val resultMessage = validation.validate(data)
 
-        Assert.assertEquals(false, result)
+        Assert.assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_false_when_name_is_empty() {
+    fun should_return_message_name_empty_when_name_is_empty() {
         val expectedMessage = R.string.error_input_name
-        var actualMessage = 0
 
         val inputRegister = InputRegister(name = "")
-        val result = validation.validate(inputRegister, message = {
-            actualMessage = it
-        })
+        val resultMessage = validation.validate(inputRegister)
 
-        Assert.assertEquals(expectedMessage, actualMessage)
-        Assert.assertEquals(false, result)
+        Assert.assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_false_when_email_is_empty() {
+    fun should_return_message_invalid_email_when_email_is_empty() {
         val expectedMessage = R.string.error_input_email
-        var actualMessage = 0
 
         val inputRegister = InputRegister(name = "ada", email = "")
-        val result = validation.validate(inputRegister, message = {
-            actualMessage = it
-        })
+        val resultMessage = validation.validate(inputRegister)
 
-        Assert.assertEquals(expectedMessage, actualMessage)
-        Assert.assertEquals(false, result)
+        Assert.assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_false_when_email_pattern_is_incorrect() {
+    fun should_return_message_invalid_email_when_email_pattern_is_incorrect() {
         val expectedMessage = R.string.error_input_email
-        var actualMessage = 0
 
         val inputRegister = InputRegister(name = "ada", email = "ada")
-        val result = validation.validate(inputRegister, message = {
-            actualMessage = it
-        })
+        val resultMessage = validation.validate(inputRegister)
 
-        Assert.assertEquals(expectedMessage, actualMessage)
-        Assert.assertEquals(false, result)
+        Assert.assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_false_when_password_is_empty() {
+    fun should_return_message_invalid_password_when_password_is_empty() {
         val expectedMessage = R.string.error_input_password
-        var actualMessage = 0
 
         val inputRegister = InputRegister(name = "ada", email = "ada@ada.com", password = "")
-        val result = validation.validate(inputRegister,message = {
-            actualMessage = it
-        })
+        val resultMessage = validation.validate(inputRegister)
 
-        Assert.assertEquals(expectedMessage, actualMessage)
-        Assert.assertEquals(false, result)
+        Assert.assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_false_when_password_length_is_less_than_6_chars() {
+    fun should_return_message_invalid_password_when_password_length_is_less_than_6_chars() {
         val expectedMessage = R.string.error_input_password
-        var actualMessage = 0
 
         val inputRegister = InputRegister(name = "ada", email = "ada@ada.com", password = "ada")
-        val result = validation.validate(inputRegister,message = {
-            actualMessage = it
-        })
+        val resultMessage = validation.validate(inputRegister)
 
-        Assert.assertEquals(expectedMessage, actualMessage)
-        Assert.assertEquals(false, result)
+        Assert.assertEquals(expectedMessage, resultMessage)
     }
 
     @Test
-    fun should_return_true_when_email_and_password_valid() {
+    fun should_return_null_when_email_and_password_valid() {
         val inputRegister = InputRegister(name = "ada", email = "ada@ada.com", password = "adaada")
         val result = validation.validate(inputRegister)
 
-        Assert.assertEquals(true, result)
+        Assert.assertEquals(null, result)
     }
 
 }

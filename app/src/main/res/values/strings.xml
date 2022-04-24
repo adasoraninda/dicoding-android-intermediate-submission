@@ -40,11 +40,13 @@
     <string name="error_permission">Not getting permission</string>
     <string name="error_input_desc_empty">Please correct your description</string>
     <string name="error_file_null">File can\'t be null</string>
+    <string name="error_input_validation">Input object not valid</string>
     <string name="fail_to_show_camera">Fail to show camera</string>
     <string name="fail_to_take_picture">Failed to take picture</string>
 
     <string name="cd_back_button">going back to previous page</string>
     <string name="cd_load_more_data">Load more data</string>
     <string name="cd_an_image_of_story_dicoding">An image of story dicoding</string>
+    <string name="cd_add_location">Add my current location</string>
 
 </resources>

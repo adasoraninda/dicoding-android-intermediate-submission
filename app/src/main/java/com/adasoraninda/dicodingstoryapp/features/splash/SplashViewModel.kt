@@ -7,9 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
 class SplashViewModel(
-    preference: UserPreference, dispatcher: CoroutineContext = Dispatchers.Main
+    private val preference: UserPreference,
+    private val dispatcher: CoroutineContext = Dispatchers.Main
 ) : ViewModel() {
 
-    val isLoggedIn = preference.isLoggedIn().asLiveData(dispatcher)
+    val isLoggedIn get() = preference.isLoggedIn().asLiveData(dispatcher)
 
 }

@@ -17,7 +17,6 @@ import com.adasoraninda.dicodingstoryapp.R
 import com.adasoraninda.dicodingstoryapp.common.adapter.LoadingStateAdapter
 import com.adasoraninda.dicodingstoryapp.common.dialog.ProfileDialogFragment
 import com.adasoraninda.dicodingstoryapp.databinding.FragmentListStoryBinding
-import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_TOKEN_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.injector
 import timber.log.Timber
@@ -55,6 +54,10 @@ class ListStoryFragment : Fragment() {
             requireActivity().finishAffinity()
         }
 
+        if (savedInstanceState == null && viewModel.initialize.not()) {
+            viewModel.initialize()
+        }
+
         setupView()
         actionListeners()
         observeViewModel()
@@ -77,13 +80,6 @@ class ListStoryFragment : Fragment() {
                 binding?.textError?.text = (loadStates.refresh as LoadState.Error).error.message
             }
 
-            // scroll to top when refresh data
-            if (loadStates.refresh is LoadState.NotLoading
-                &&  loadStates.source.prepend.endOfPaginationReached
-                && !loadStates.source.append.endOfPaginationReached
-            ) {
-                binding?.listStories?.smoothScrollToPosition(0)
-            }
         }
     }
 
@@ -167,7 +163,6 @@ class ListStoryFragment : Fragment() {
             if (error == null) return@observe
 
             val message = when (error) {
-                ERROR_EMPTY -> getString(R.string.error_occurred)
                 ERROR_TOKEN_EMPTY -> getString(R.string.error_token)
                 else -> error
             }

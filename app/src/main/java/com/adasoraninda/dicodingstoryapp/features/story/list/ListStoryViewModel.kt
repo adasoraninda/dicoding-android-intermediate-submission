@@ -1,6 +1,5 @@
 package com.adasoraninda.dicodingstoryapp.features.story.list
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -9,10 +8,8 @@ import com.adasoraninda.dicodingstoryapp.model.Story
 import com.adasoraninda.dicodingstoryapp.model.User
 import com.adasoraninda.dicodingstoryapp.model.UserPreference
 import com.adasoraninda.dicodingstoryapp.service.remote.IRemoteDataSource
-import com.adasoraninda.dicodingstoryapp.utils.ERROR_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_TOKEN_EMPTY
 import com.adasoraninda.dicodingstoryapp.utils.formatToken
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -33,28 +30,28 @@ class ListStoryViewModel(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> get() = _errorMessage
 
-    val enableMenu
+    val enableMenu: LiveData<Boolean>
         get() = Transformations.map(_userData) {
             it.token.isNotEmpty()
         }
 
-    init {
-        runBlocking {
-            getUser()
-            getStories()
-        }
+    var initialize = false
+        private set
+
+    fun initialize() = runBlocking {
+        getUser()
+        getStories()
+        initialize = true
     }
 
-    @VisibleForTesting
     fun getUser() = viewModelScope.launch {
         userPreference.getUser().collect(_userData::setValue)
     }
 
-    @VisibleForTesting
     fun getStories() = viewModelScope.launch {
         val token = _userData.value?.token
 
-        if (token == null) {
+        if (token.isNullOrEmpty()) {
             _errorMessage.value = ERROR_TOKEN_EMPTY
             return@launch
         }
@@ -63,10 +60,8 @@ class ListStoryViewModel(
 
         remoteDataSource.getPagingStories(token.formatToken())
             .cachedIn(this)
-            .catch { _errorMessage.value = ERROR_EMPTY }
             .collect { result ->
                 Timber.d(result.toString())
-
                 val stories = result.map { s ->
                     Story(
                         s.id.orEmpty(),
@@ -78,7 +73,6 @@ class ListStoryViewModel(
                         s.longitude.orEmpty()
                     )
                 }
-
                 _storiesData.postValue(stories)
             }
     }

@@ -1,6 +1,5 @@
 package com.adasoraninda.dicodingstoryapp.features.auth.register
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,11 +32,12 @@ class RegisterViewModel(
 
     fun register(name: String?, email: String?, password: String?) = viewModelScope.launch {
         val inputRegister = InputRegister(name, email, password)
-        val isInputValid = checkInput(inputRegister) {
-            _errorMessage.value = Event(it)
-        }
+        val messageValidation = validation.validate(inputRegister)
 
-        if (!isInputValid) return@launch
+        if (messageValidation != null) {
+            _errorMessage.value = Event(messageValidation)
+            return@launch
+        }
 
         remoteDataSource.register(name!!, email!!, password!!)
             .onStart { _loading.postValue(true) }
@@ -62,11 +62,6 @@ class RegisterViewModel(
 
     fun dismissErrorDialog() {
         _dialogInfoError.value = null
-    }
-
-    @VisibleForTesting
-    fun checkInput(inputRegister: InputRegister, message: (Int) -> Unit): Boolean {
-        return validation.validate(inputRegister, message)
     }
 
 }

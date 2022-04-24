@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.adasoraninda.dicodingstoryapp.R
 import com.adasoraninda.dicodingstoryapp.common.dialog.AddPhotoDialogFragment
@@ -64,12 +65,15 @@ class AddStoryFragment : Fragment() {
     ) { permissions ->
         when {
             permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                binding?.imageAddLoc?.isVisible = false
                 getMyLocation()
             }
             permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                binding?.imageAddLoc?.isVisible = false
                 getMyLocation()
             }
             else -> {
+                binding?.imageAddLoc?.isVisible = true
                 Timber.d("Permission location not granted, location value will be null")
             }
         }
@@ -92,7 +96,7 @@ class AddStoryFragment : Fragment() {
             binding?.textInfoClickImage?.isVisible = false
             binding?.imageStory?.setImageBitmap(result)
 
-            viewModel.setImageFile(reduceFileImageCameraX(myFile, isBackCamera))
+            viewModel.imageFile = reduceFileImageCameraX(myFile, isBackCamera)
         }
     }
 
@@ -106,7 +110,7 @@ class AddStoryFragment : Fragment() {
             binding?.textInfoClickImage?.isVisible = false
             binding?.imageStory?.setImageURI(selectedImg)
 
-            viewModel.setImageFile(reduceFileImage(myFile))
+            viewModel.imageFile = reduceFileImage(myFile)
         }
     }
 
@@ -122,27 +126,17 @@ class AddStoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
         requireActivity().onBackPressedDispatcher.addCallback {
             findNavController().popBackStack()
         }
 
-        if (!checkPermission(Manifest.permission.CAMERA)) {
-            requestCameraPermission.launch(Manifest.permission.CAMERA)
+        if (savedInstanceState == null && viewModel.initialize.not()) {
+            viewModel.initialize()
         }
 
-        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
-            !checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-        ) {
-            requestLocationPermission.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            )
-        }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
+        setupView()
         actionListeners()
         observeViewModel()
     }
@@ -153,12 +147,23 @@ class AddStoryFragment : Fragment() {
         super.onDestroyView()
     }
 
+    private fun setupView() {
+        val view = binding ?: return
+
+        view.imageAddLoc.isVisible = !checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
+                !checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        if (!checkPermission(Manifest.permission.CAMERA)) {
+            requestCameraPermission.launch(Manifest.permission.CAMERA)
+        }
+    }
+
     private fun getMyLocation() {
         try {
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location ->
                     Timber.d(location.toString())
-                    viewModel.setLocation(location)
+                    viewModel.location = location
                 }
         } catch (e: SecurityException) {
             e.printStackTrace()
@@ -175,6 +180,19 @@ class AddStoryFragment : Fragment() {
 
     private fun actionListeners() {
         val view = binding ?: return
+
+        view.imageAddLoc.setOnClickListener {
+            if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
+                !checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+            ) {
+                requestLocationPermission.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
+            }
+        }
 
         view.imageStory.setOnClickListener {
             it.hideKeyboard()
