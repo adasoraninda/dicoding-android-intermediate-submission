@@ -124,8 +124,8 @@ class StoryMapsViewModelTest {
             location = locationArgument,
             size = sizeArgument
         )
-        Assert.assertNotNull(storiesData)
-        Assert.assertNotNull(tokenArgument)
+        assertNotNull(storiesData)
+        assertNotNull(tokenArgument)
         Assert.assertEquals(stories.size, storiesData.size)
         Assert.assertEquals(stories[0].id, storiesData[0].id)
         Assert.assertEquals(user.token.formatToken(), tokenArgument)
@@ -171,8 +171,8 @@ class StoryMapsViewModelTest {
             location = locationArgument,
             size = sizeArgument
         )
-        Assert.assertNotNull(errorMessage)
-        Assert.assertNotNull(tokenArgument)
+        assertNotNull(errorMessage)
+        assertNotNull(tokenArgument)
         Assert.assertEquals("Error", errorMessage)
         Assert.assertEquals(user.token.formatToken(), tokenArgument)
         Assert.assertEquals(1, pageArgument)

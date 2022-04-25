@@ -122,7 +122,7 @@ class LoginViewModelTest {
 
     @Test
     fun dismiss_error_dialog_test() {
-        viewModel.dismissError()
+        viewModel.dismissErrorDialog()
 
         val result = viewModel.dialogInfoError.getOrAwaitValue()
         Assert.assertNull(result)

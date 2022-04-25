@@ -88,7 +88,7 @@ class ListStoryViewModelTest {
             )
         ).thenReturn(mockStories)
 
-        viewModel.getUser().join()
+        viewModel.getUser()
         viewModel.getStories()
 
         val storiesData = viewModel.storiesData.getOrAwaitValue()
@@ -135,7 +135,7 @@ class ListStoryViewModelTest {
         val mockResult = flowOf(getUserPreferenceData(user))
         `when`(dataStore.data).thenReturn(mockResult)
 
-        viewModel.getUser().join()
+        viewModel.getUser()
         viewModel.showProfileDialog()
 
         val profileDialog = viewModel.profileDialog.getOrAwaitValue()

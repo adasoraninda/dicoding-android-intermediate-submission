@@ -105,7 +105,7 @@ class LoginFragment : Fragment() {
                 message = message,
                 acceptText = requireContext().getString(R.string.ok),
                 onAcceptClicked = {
-                    viewModel.dismissError()
+                    viewModel.dismissErrorDialog()
                 }
             ).apply { isCancelable = false }
 

@@ -8,6 +8,7 @@ import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -18,15 +19,20 @@ import com.adasoraninda.dicodingstoryapp.common.adapter.LoadingStateAdapter
 import com.adasoraninda.dicodingstoryapp.common.dialog.ProfileDialogFragment
 import com.adasoraninda.dicodingstoryapp.databinding.FragmentListStoryBinding
 import com.adasoraninda.dicodingstoryapp.utils.ERROR_TOKEN_EMPTY
+import com.adasoraninda.dicodingstoryapp.utils.EspressoIdlingResource
 import com.adasoraninda.dicodingstoryapp.utils.injector
 import timber.log.Timber
 
-class ListStoryFragment : Fragment() {
+class ListStoryFragment(
+    private val viewModelFactory: ViewModelProvider.Factory? = null
+) : Fragment() {
 
     private var _binding: FragmentListStoryBinding? = null
     private val binding get() = _binding
 
-    private val viewModel by viewModels<ListStoryViewModel> { injector().listStoryFactory }
+    private val viewModel by viewModels<ListStoryViewModel> {
+        viewModelFactory ?: injector().listStoryFactory
+    }
 
     private var profileDialog: ProfileDialogFragment? = null
 
@@ -54,6 +60,7 @@ class ListStoryFragment : Fragment() {
             requireActivity().finishAffinity()
         }
 
+        EspressoIdlingResource.increment()
         if (savedInstanceState == null && viewModel.initialize.not()) {
             viewModel.initialize()
         }
@@ -63,6 +70,7 @@ class ListStoryFragment : Fragment() {
         observeViewModel()
 
         storiesAdapter.addLoadStateListener { loadStates ->
+            EspressoIdlingResource.decrement()
             Timber.d("$loadStates\n")
             binding?.progressBar?.isVisible = loadStates.refresh is LoadState.Loading
 
@@ -75,7 +83,13 @@ class ListStoryFragment : Fragment() {
                 binding?.textError?.isVisible = false
             }
 
-            // set error text
+            // check empty data
+            if (loadStates.append is LoadState.NotLoading && loadStates.append.endOfPaginationReached) {
+                binding?.textError?.isVisible = storiesAdapter.itemCount < 1
+                binding?.textError?.text = getString(R.string.success_empty)
+            }
+
+            // set error text when state error
             if (loadStates.refresh is LoadState.Error) {
                 binding?.textError?.text = (loadStates.refresh as LoadState.Error).error.message
             }

@@ -1,0 +1,142 @@
+Android Test (Integration/ Medium test)
+  - ListStoryFragmentTest
+    a. pengujian mendapatkan data cerita sukses:
+       - Memastikan app bar dalam keadaan tampil.
+       - Memastikan app bar tampil dengan teks "Dicoding Story App".
+       - Memastikan list dalam keadaan tampil.
+       - Melakukan tindakan gulir pada list dan memastikan ada view yang memiliki teks "Anonim".
+    b. pengujian mendapatkan data cerita gagal (kosong):
+       - Memastikan app bar dalam keadaan tampil.
+       - Memastikan app bar tampil dengan teks "Dicoding Story App".
+       - Memastikan teks error dalam keadaan tampil.
+       - Memastikan teks error memiliki konten keks "No new data found".
+
+Unit Test
+  - ViewModel
+    - AddStoryViewModelTest:
+      a. pengujian fungsi initalize:
+         - Memastikan apakah variabel initialize bernilai true jika fungsi initialize dipanggil.
+      b. pengujian fungsi addStory kasus berhasil:
+         - Memanggil fungsi addStory dengan parameternya.
+	 - Setelah fungsi addStory terpanggil, memastikan fungsi validasi terpanggil hanya sekali.
+         - Memastikan kelas RemoteDataSource terpanggil sekali dan memanggil fungsi addStory.
+         - Memastikan parameter input yang ada pada addStory tidak null.
+	 - Memastikan deskripsi yang ada sesuai/sama dengan yang ada pada fungsi addStory.         
+	 - Memastikan variabel dialogSuccess tidak null.
+         - Memastikan variabel dialogSuccess memiliki nilai pesan sama dengan pesan sukses dari respon.
+      c. pengujian fungsi addStory kasus gagal:
+         - Memanggil fungsi addStory dengan parameternya.
+	 - Setelah fungsi addStory terpanggil, akan memastikan fungsi validasi terpanggil hanya sekali.
+         - Memastikan kelas RemoteDataSource terpanggil sekali dan memanggil fungsi addStory.
+         - Memastikan parameter input yang ada pada addStory tidak null.
+	 - Memastikan deskripsi yang ada sesuai/sama dengan yang ada pada fungsi addStory.         
+	 - Memastikan variabel dialogError tidak null.
+         - Memastikan variabel dialogError memiliki nilai pesan sama dengan pesan error dari respon.
+      d. pengujian fungsi getUser:
+         - Memastikan class DataStore terpanggil hanya sekali setelah fungsi getUser terpanggil.
+      e. pengujian fungsi dissmissSuccessDialog:
+         - Memastikan nilai variabel dialogInfoSuccess null setelah fungsi dismissSuccessDialog terpanggil.
+      f. pengujian fungsi dismissErrorDialog:
+         - Memastikan nilai variabel dialogInfoError null setelah fungsi dimissErrorDialog terpanggil.
+    
+    - ListStoryViewModelTest:
+      a. pengujian fungsi initalize:
+         - Memastikan apakah variabel initialize bernilai true jika fungsi initialize dipanggil.
+      b. pengujian fungsi getStories kasus berhasil:
+         - Memanggil fungsi getStories.
+         - Seletah fungsi getStories terpanggil, akan memastikan nilai variabel storiesData tidak null.
+         - Memastikan class RemoteDataSource terpanggil.
+         - Memastikan nilai token yang dikirim sesuai dengan input yang diberikan.
+         - Memastikan parameter size bernilai 10.
+      c. pengujian fungsi getStories kasus gagal (token kosong):
+         - Memanggil fungsi getStories.
+         - Memastikan variabel errorMessage tidak null.
+         - Memsatikan variabel errorMessage memiliki nilai ERROR_TOKEN_EMPTY.
+      d. pengujian fungsi getUser:
+         - Memastikan class DataStore terpanggil hanya sekali setelah fungsi getUser terpanggil.
+      e. pengujian fungsi showProfileDialog:
+         - Memastikan nilai variabel profileDialog tidak null setelah fungsi dismissProfileDialog terpanggil.
+      f. pengujian fungsi dismissProfileDialog:
+         - Memastikan nilai variabel profileDialog null setelah fungsi dismissProfileDialog terpanggil.
+      g. pengujian fungsi logout:
+         - Memastikan class DataStore terpanggil setelah fungsi logout terpanggil.     
+    
+    - LoginViewModelTest
+      a. pengujian fungsi login kasus sukses:
+         - Memanggil fungsi login dengan parameter email dan password.
+         - Setelah fungsi login terpanggil, akan memastikan nilai variabel loginSuccess tidak null.
+         - Memastikan email dan password yang di input ke fungsi login, sesuai.
+         - Memastikan class InputValidation terpanggil hanya sekali.
+         - Memastikan class RemoteDataSource terpanggil sekali.
+         - Memastikan class DataStore terpanggil.
+      b. pengujian fungsi login kasus gagal:
+         - Memanggil fungsi login dengan parameter email dan password.
+         - Setelah fungsi login terpanggil, akan memastikan nilai variabel errorMessage tidak null.
+         - Memastikan pesan error sesuai.
+         - Memastikan email dan password yang di input ke fungsi login, sesuai.
+         - Memastikan class InputValidation terpanggil hanya sekali.
+         - Memastikan class RemoteDataSource terpanggil sekali.
+      c. pengujian fungsi dismissErrorDialog:
+         - Memastikan variabel dialogInfoError setelah fungsi dismissErrorDialog terpanggil.
+   
+    - RegisterViewModelTest
+      a. pengujian fungsi register kasus sukses:
+	 - Memanggil fungsi register dengan parameter name, email dan password.
+         - Setelah fungsi register terpanggil, akan memastikan nilai variabel dialogInfoSuccess tidak null.
+         - Memastikan pesan sukses dialogInfoSuccess sesuai.
+         - Memastikan class Validation terpanggil hanya sekali.
+         - Memastikan class RemoteDataSource terpanggil sekali.
+         - Memastikan parameter yang diinput kan ke fungsi register sesuai.
+      b. pengujian fungsi register kasus gagal:
+	 - Memanggil fungsi register dengan parameter name, email dan password.
+         - Setelah fungsi register terpanggil, akan memastikan nilai variabel dialogInfoError tidak null.
+         - Memastikan pesan error dialogInfoError sesuai.
+         - Memastikan class Validation terpanggil hanya sekali.
+         - Memastikan class RemoteDataSource terpanggil sekali.
+         - Memastikan parameter yang diinput kan ke fungsi register sesuai.
+      c. pengujian fungsi dismissSuccessDialog:
+         - Memasstikan nilai variabel dialogInfoSuccess null setelah fungsi dismissSuccessDialog terpanggil.
+      d. pengujian fungsi dismissErrorDialog:
+         - Memasstikan nilai variabel dialogInfoError null setelah fungsi dismissErrorDialog terpanggil.
+
+    - SplashViewModelTest
+      a. pengujian variabel isLoggedIn bernilai true:
+         - Ketika data dari class UserPreference bernilai true, maka nilai variabel isLoggedIn berniali true.
+      b. pengujian variabel isLoggedIn bernilai false:
+         - Ketika data dari class UserPreference bernilai false, maka nilai variabel isLoggedIn berniali false.
+    
+    - StoryMapsViewModelTest
+      a. pengujian fungsi initalize:
+         - Memastikan apakah variabel initialize bernilai true jika fungsi initialize dipanggil.
+      b. pengujian fungsi getStories kasus sukses:
+         - Memaggil fungsi getAllStories.
+         - Setelah memanggil fungsi getAllStories, memastikan data stories tidak null.
+         - Memastikan ukuran dari data stories sesuai.
+         - Memastikan nilai data stories sesuai.
+         - Memastikan semua argument yang di inputkan ke fungsi getAllStories sesuai.
+         - Memastikan class RemoteDataSource terpanggil.
+      c. pengujian fungsi getStories kasus gagal:
+         - Memaggil fungsi getAllStories.
+         - Setelah memanggil fungsi getAllStories, memastikan variabel errorMessage tidak null.
+	 - Memastikan pesan error yang ada sesuai.
+         - Memastikan semua argument yang di inputkan ke fungsi getAllStories sesuai.
+         - Memastikan class RemoteDataSource terpanggil.
+      d. pengujian fungsi calculateList jika old list bernilai kosong dan new lsit bernilai tidak kosong:
+         - Memanggil fungsi calculateListData dengan nilai oldList kosong dan newList tidak kosong.
+         - Memastikan ukuran hasil list merupakan ukuran dari newList. 
+         - Memastikan nilai hasil list merupakan nilai dari newList.
+      e. pengujian fungsi calculateList jika old list bernilai tidak kosong dan new list beriniali kosong:
+         - Memanggil fungsi calculateListData dengan nilai oldList kosong dan newList kosong.
+         - Memastikan ukuran hasil list merupakan ukuran dari oldList.
+         - Memastikan nilai hasil list merupakan nilai dari oldList.
+      f. pengujian fungsi calculateList jika kedua list tidak bernilai kosong:
+         - Memanggil fungsi calculateListData dengan parameter list yang tidak kosong.
+         - Memastikan ukuran hasil list merupakan gabungan dari kedua list.
+         - Memastikan nilai hasil list unik dan merupakan gabungan dari kedua list.
+      g. pengujian fungsi setCameraFocus:
+         - Memastikan nilai yang diinputkan ke fungsi setCameraFocus sesuai.
+      h. pengujian fungsi showDialog:
+         - Memastikan nilai variabel showDialog bernilai true setelah fungsi showDialog terpanggil.
+      i. pengujian fungsi dismissDialog:
+         - Memastikan nilai variabel showDialog bernilai false setelah fungsi dismissDialog terpanggil.
+ 

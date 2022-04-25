@@ -45,7 +45,9 @@ class ListStoryViewModel(
     }
 
     fun getUser() = viewModelScope.launch {
-        userPreference.getUser().collect(_userData::setValue)
+        userPreference.getUser().collect {
+            _userData.value = it
+        }
     }
 
     fun getStories() = viewModelScope.launch {
@@ -75,6 +77,7 @@ class ListStoryViewModel(
                 }
                 _storiesData.postValue(stories)
             }
+
     }
 
     fun showProfileDialog() {

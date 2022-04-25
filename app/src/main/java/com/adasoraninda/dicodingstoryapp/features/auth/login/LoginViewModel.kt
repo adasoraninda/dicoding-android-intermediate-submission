@@ -71,7 +71,7 @@ class LoginViewModel(
             }
     }
 
-    fun dismissError() {
+    fun dismissErrorDialog() {
         _dialogInfoError.value = null
     }
 
